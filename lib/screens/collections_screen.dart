@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/linecons_icons.dart';
 import 'package:foodpe/functions/db_functions.dart';
-import 'package:foodpe/functions/snackbar.dart';
 import 'package:foodpe/main.dart';
 import 'package:foodpe/model/food_model.dart';
 import 'package:foodpe/screens/item/food_details_db.dart';
