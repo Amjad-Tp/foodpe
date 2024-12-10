@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:foodpe/functions/db_functions.dart';
+import 'package:foodpe/main.dart';
 import 'package:foodpe/model/user_model.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:image_picker/image_picker.dart';
@@ -38,6 +39,9 @@ class _UserEditScreenState extends State<UserEditScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isDarkMode = themeNotifier.value;
+
     return SafeArea(
       child: Scaffold(
         body: GestureDetector(
@@ -61,10 +65,10 @@ class _UserEditScreenState extends State<UserEditScreen> {
                   child: Container(
                     width: double.infinity,
                     height: 640,
-                    decoration: const BoxDecoration(
-                        color: Colors.white,
+                    decoration: BoxDecoration(
+                        color: isDarkMode ? Colors.black : Colors.white,
                         borderRadius:
-                            BorderRadius.only(topLeft: Radius.circular(130))),
+                            const BorderRadius.only(topLeft: Radius.circular(130))),
                     child: Column(
                       children: [
                         const SizedBox(
@@ -202,12 +206,12 @@ class _UserEditScreenState extends State<UserEditScreen> {
                                         style: TextButton.styleFrom(
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 40, vertical: 8),
-                                          foregroundColor: Colors.black,
+                                          foregroundColor: isDarkMode ? Colors.white : Colors.black,
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(10),
-                                              side: const BorderSide(
-                                                  color: Colors.black,
+                                              side: BorderSide(
+                                                  color: isDarkMode ? Colors.white : Colors.black,
                                                   width: 1.5)),
                                         ),
                                         child: const Text(
@@ -231,8 +235,7 @@ class _UserEditScreenState extends State<UserEditScreen> {
                                         style: TextButton.styleFrom(
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 40, vertical: 8),
-                                          backgroundColor:
-                                              const Color(0xFFE08C43),
+                                          backgroundColor: isDarkMode ? const Color(0xFF077B92) : const Color(0xFFE27619),
                                           foregroundColor: Colors.white,
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
@@ -269,7 +272,8 @@ class _UserEditScreenState extends State<UserEditScreen> {
           email: _emailController.text,
           pin: _pinController.text,
           phoneNumber: _phoneNumberController.text,
-          imagePath: _selectedImagePath);
+          imagePath: _selectedImagePath
+      );
 
       final settingsBox = Hive.box('settingsBox');
       final oldPin = settingsBox.get('applock');
