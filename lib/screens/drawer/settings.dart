@@ -13,6 +13,8 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   late bool isDarkMode;
 
+  bool isLoading = false;
+
   @override
   void initState() {
     super.initState();
@@ -20,44 +22,92 @@ class _SettingsScreenState extends State<SettingsScreen> {
     isDarkMode = settingsBox.get('isDarkMode', defaultValue: false);
   }
 
-  void toggleDarkMode(bool value) {
+  void toggleDarkMode(bool value) async {
+    setState(() {
+      isLoading = true;
+    });
+
+    await Future.delayed(const Duration(seconds: 1));
+
     setState(() {
       isDarkMode = value;
-      themeNotifier.value = value; // Notify listeners
+      themeNotifier.value = value;
     });
+
     final settingsBox = Hive.box('settingsBox');
-    settingsBox.put('isDarkMode', isDarkMode);
+    await settingsBox.put('isDarkMode', isDarkMode);
+
+    setState(() {
+      isLoading = false;
+    });
   }
+
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      body: Column(
+      body: Stack(
         children: [
-          OurAppBarTheme(
-            title: 'Settings',
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-          Expanded(
-            child: ListView(
-              children: [
-                ListTile(
-                  title: const Text(
-                    "Dark Theme",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  trailing: Switch(
-                    value: isDarkMode,
-                    onChanged: toggleDarkMode,
-                    activeColor: Colors.grey[300],
-                  ),
+          Column(
+            children: [
+              OurAppBarTheme(
+                title: 'Settings',
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              Expanded(
+                child: ListView(
+                  children: [
+                    ListTile(
+                      title: const Text(
+                        "Dark Theme",style: TextStyle(fontSize: 20),
+                      ),
+                      trailing: Switch(
+                        value: isDarkMode,
+                        onChanged: toggleDarkMode,
+                        activeColor: Colors.grey[300],
+                      ),
+                    ),
+          
+                    InkWell(
+                      onTap: () {
+                        
+                      },
+                      child: const SizedBox(
+                        height: 50,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 15.0 ,vertical: 10),
+                          child: Text('Rest App',style: TextStyle(fontSize: 20),),
+                        ),
+                      ),
+                    )
+          
+                  ],
                 ),
-              ],
-            ),
-          )
+              )
+            ],
+          ),
+
+          if(isLoading)
+            Container(
+              color: Colors.black.withOpacity(0.5),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 60,
+                      height: 60,
+                      child: CircularProgressIndicator(color: isDarkMode ? Colors.white : const Color(0xFFE27619),strokeWidth: 3,),
+                    ),
+                    const SizedBox(height: 10,),
+                    Text('Loading',style: TextStyle(fontSize: 15,color: isDarkMode ? Colors.white : const Color(0xFFE27619)),)
+                  ],
+                ),
+              ),
+            )
         ],
       ),
     ));
