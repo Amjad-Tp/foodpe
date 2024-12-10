@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _searchController.addListener(_filterItems);
 
     final settingsBox = Hive.box('settingsBox');
-    isDarkMode = settingsBox.get('isDarkMode');
+    isDarkMode = settingsBox.get('isDarkMode',defaultValue: false);
 
     settingsBox.listenable().addListener(() {
       final newDarkMode = settingsBox.get('isDarkMode');
@@ -75,7 +75,6 @@ class _HomeScreenState extends State<HomeScreen> {
     _filterItems();
   }
 
-  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(

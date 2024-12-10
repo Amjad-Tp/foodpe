@@ -16,8 +16,10 @@ void main() async {
 
   await Hive.openBox<User>('userBox');
   await Hive.openBox('settingsBox');
-  await Hive.openBox('bookmarkedBox');
   await Hive.openBox<Food>('foodBox');
+
+  final settingsBox = Hive.box('settingsBox');
+  themeNotifier.value = settingsBox.get('isDarkMode',defaultValue: false);
 
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
