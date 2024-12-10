@@ -3,6 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/linecons_icons.dart';
 import 'package:foodpe/functions/db_functions.dart';
+import 'package:foodpe/functions/snackbar.dart';
+import 'package:foodpe/main.dart';
+import 'package:foodpe/model/food_model.dart';
 import 'package:foodpe/screens/item/food_details_db.dart';
 
 class CollectionsScreen extends StatelessWidget {
@@ -43,6 +46,9 @@ class CollectionsScreen extends StatelessWidget {
                                 builder: (ctx) => FoodDetailsDB(
                                     foodRecipe: foodRecipe),
                               ));
+                            },
+                            onLongPress: () {
+                              collectionRemoveConfirmation(context,foodRecipe);
                             },
                             child: Container(
                               width: double.infinity,
@@ -117,6 +123,35 @@ class CollectionsScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Future <void> collectionRemoveConfirmation(BuildContext context, Food foodRecipe) async{
+
+    bool isDarkMode = themeNotifier.value;
+    
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: isDarkMode ? const Color(0xFF077B92) : Colors.white,
+          title: const Text('Remove item'),
+          content: Text("Are sure to remove '${foodRecipe.title}' ?",style: const TextStyle(fontSize: 18),),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancel',style: TextStyle(color: isDarkMode ? Colors.white : Colors.black),),
+            ),
+            TextButton(
+              onPressed: () {
+                collectionRemove(foodRecipe, foodRecipe.id!);
+                Navigator.of(context).pop();
+              },
+              child: Text('Remove',style: TextStyle(color: isDarkMode ? Colors.white : Colors.black),),
+            )
+          ],
+        );
+      },
     );
   }
 }

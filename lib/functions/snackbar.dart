@@ -18,8 +18,3 @@ void showMessage(BuildContext context, String message,Color backgroundColor, [Co
   );
 }
 
-
-void userEdit(BuildContext context) {
-  
-}
-
