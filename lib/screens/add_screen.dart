@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:foodpe/functions/db_functions.dart';
 import 'package:foodpe/functions/snackbar.dart';
@@ -17,7 +19,7 @@ class AddScreen extends StatefulWidget {
 class _AddScreenState extends State<AddScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  final ImagePicker _picker = ImagePicker();
+  // final ImagePicker _picker = ImagePicker();
   String? addFoodImagePath;
 
   final _nameController = TextEditingController();
@@ -34,6 +36,28 @@ class _AddScreenState extends State<AddScreen> {
     TextEditingController(),
     TextEditingController(),
   ];
+
+  Future<void> _pickImage() async {
+    if (kIsWeb) {
+      // Web: Use base64 encoding
+      final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (pickedImage != null) {
+        final bytes = await pickedImage.readAsBytes();
+        setState(() {
+          addFoodImagePath = base64Encode(bytes); // Store as base64 string
+        });
+      }
+    } else {
+      // Mobile: Use file path
+      final XFile? pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (pickedImage != null) {
+        setState(() {
+          addFoodImagePath = pickedImage.path; // Store file path
+        });
+      }
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -55,15 +79,7 @@ class _AddScreenState extends State<AddScreen> {
                 height: 5,
               ),
               GestureDetector(
-                onTap: () async {
-                  final XFile? pickedFile =
-                      await _picker.pickImage(source: ImageSource.gallery);
-                  if (pickedFile != null) {
-                    setState(() {
-                      addFoodImagePath = pickedFile.path;
-                    });
-                  }
-                },
+                onTap: _pickImage,
                 child: Container(
                   width: double.infinity,
                   height: 240,
@@ -72,8 +88,11 @@ class _AddScreenState extends State<AddScreen> {
                     borderRadius: BorderRadius.circular(12),
                     image: addFoodImagePath != null
                         ? DecorationImage(
-                            image: FileImage(File(addFoodImagePath!)),
-                            fit: BoxFit.cover)
+                            image: kIsWeb
+                                ? MemoryImage(base64Decode(addFoodImagePath!))
+                                : FileImage(File(addFoodImagePath!)),
+                            fit: BoxFit.cover,
+                          )
                         : null,
                   ),
                   child: addFoodImagePath == null
@@ -83,6 +102,7 @@ class _AddScreenState extends State<AddScreen> {
                           size: 60,
                         )
                       : null,
+
                 ),
               ),
               const SizedBox(
@@ -153,7 +173,8 @@ class _AddScreenState extends State<AddScreen> {
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Fill this category field';
-                                } else if (value.trim() != 'Breakfast' &&
+                                } else if (
+                                    value.trim() != 'Breakfast' &&
                                     value.trim() != 'Lunch' &&
                                     value.trim() != 'Snacks' &&
                                     value.trim() != 'Dinner') {
@@ -211,7 +232,7 @@ class _AddScreenState extends State<AddScreen> {
                         ),
                         icon: const Icon(Icons.add_rounded),
                         style:
-                            TextButton.styleFrom(foregroundColor: Colors.black),
+                            TextButton.styleFrom(foregroundColor: isDarkMode ? Colors.white : Colors.black),
                       ),
                       const SizedBox(
                         height: 15,

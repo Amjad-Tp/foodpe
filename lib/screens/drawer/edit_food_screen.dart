@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:foodpe/functions/db_functions.dart';
 import 'package:foodpe/functions/snackbar.dart';
+import 'package:foodpe/main.dart';
 import 'package:foodpe/model/food_model.dart';
 import 'package:foodpe/screens/code_Extraction/custom_textfield.dart';
 import 'package:image_picker/image_picker.dart';
@@ -19,8 +22,6 @@ class EditFoodScreen extends StatefulWidget {
 
 class _EditFoodScreenState extends State<EditFoodScreen> {
   final _formKey = GlobalKey<FormState>();
-
-  final ImagePicker _picker = ImagePicker();
 
   String? _selectedImagePath;
 
@@ -70,9 +71,7 @@ class _EditFoodScreenState extends State<EditFoodScreen> {
 
   showMessage(context, 'Updated Successfully',Colors.white,Colors.black);
   
-
   await Future.delayed(const Duration(seconds: 2));
-
   
   Navigator.pop(context, updatedFood);
   
@@ -96,6 +95,9 @@ class _EditFoodScreenState extends State<EditFoodScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isDarkMode = themeNotifier.value;
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -117,15 +119,7 @@ class _EditFoodScreenState extends State<EditFoodScreen> {
                 height: 5,
               ),
               GestureDetector(
-                onTap: () async {
-                  final XFile? pickedFile =
-                      await _picker.pickImage(source: ImageSource.gallery);
-                  if (pickedFile != null) {
-                    setState(() {
-                      _selectedImagePath = pickedFile.path;
-                    });
-                  }
-                },
+                onTap: _pickImage,
                 child: Container(
                   width: double.infinity,
                   height: 240,
@@ -134,13 +128,16 @@ class _EditFoodScreenState extends State<EditFoodScreen> {
                     borderRadius: BorderRadius.circular(12),
                     image: _selectedImagePath != null
                         ? DecorationImage(
-                            image: FileImage(File(_selectedImagePath!)),
+                            image: kIsWeb
+                                ? MemoryImage(base64Decode(_selectedImagePath!))
+                                : FileImage(File(_selectedImagePath!)),
                             fit: BoxFit.cover,
                           )
                         : widget.foodRecipe.foodImagePath != null
                             ? DecorationImage(
-                                image: FileImage(
-                                    File(widget.foodRecipe.foodImagePath!)),
+                                image: kIsWeb
+                                    ? MemoryImage(base64Decode(widget.foodRecipe.foodImagePath!))
+                                    : FileImage(File(widget.foodRecipe.foodImagePath!)),
                                 fit: BoxFit.cover,
                               )
                             : null,
@@ -275,7 +272,7 @@ class _EditFoodScreenState extends State<EditFoodScreen> {
                         ),
                         icon: const Icon(Icons.add_rounded),
                         style:
-                            TextButton.styleFrom(foregroundColor: Colors.black),
+                            TextButton.styleFrom(foregroundColor: isDarkMode ? Colors.white : Colors.black),
                       ),
                       const SizedBox(
                         height: 15,
@@ -408,14 +405,13 @@ class _EditFoodScreenState extends State<EditFoodScreen> {
                             style: TextButton.styleFrom(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 40, vertical: 8),
-                              foregroundColor: Colors.black,
+                              foregroundColor: isDarkMode ? Colors.white : Colors.black,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                side: const BorderSide(
-                                  color: Colors.black,
-                                  width: 1.5
-                                )
-                              ),
+                                  borderRadius:
+                                      BorderRadius.circular(10),
+                                  side: BorderSide(
+                                      color: isDarkMode ? Colors.white : Colors.black,
+                                      width: 1.5)),
                             ),
                             child: const Text(
                               'Cancel',
@@ -435,7 +431,7 @@ class _EditFoodScreenState extends State<EditFoodScreen> {
                             style: TextButton.styleFrom(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 40, vertical: 8),
-                              backgroundColor: const Color(0xFFE08C43),
+                              backgroundColor: isDarkMode ? const Color(0xFF033842) : const Color(0xFFE08C43),
                               foregroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -459,5 +455,25 @@ class _EditFoodScreenState extends State<EditFoodScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _pickImage() async {
+    if (kIsWeb) {
+      final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (pickedImage != null) {
+        final bytes = await pickedImage.readAsBytes();
+        setState(() {
+          _selectedImagePath = base64Encode(bytes);
+        });
+      }
+    } else {
+      
+      final XFile? pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (pickedImage != null) {
+        setState(() {
+          _selectedImagePath = pickedImage.path;
+        });
+      }
+    }
   }
 }

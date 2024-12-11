@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:foodpe/model/user_model.dart';
 import 'package:foodpe/screens/applock/terms_conditions.dart';
@@ -27,6 +28,9 @@ class _SetApplockScreenState extends State<SetApplockScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    bool screenWidth = MediaQuery.of(context).size.width > 450;
+
     return SafeArea(
       child: Scaffold(
         body: GestureDetector(
@@ -37,7 +41,7 @@ class _SetApplockScreenState extends State<SetApplockScreen> {
                 alignment: Alignment.topCenter,
                 child: SizedBox(
                   width: double.infinity,
-                  height: 310,
+                  height: screenWidth ? 400 : 310,
                   child: Image.asset('assets/images/login_background.jpg',
                     fit: BoxFit.cover,
                   ),
@@ -49,7 +53,7 @@ class _SetApplockScreenState extends State<SetApplockScreen> {
                 child: SingleChildScrollView(
                   child: Container(
                     width: double.infinity,
-                    height: 640,
+                    height: screenWidth ? 500 : 640,
                     decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(topLeft: Radius.circular(130))
@@ -61,6 +65,7 @@ class _SetApplockScreenState extends State<SetApplockScreen> {
                     
                         const SizedBox(height: 25,),
                     
+                        if(!kIsWeb)
                         GestureDetector(
                           child: CircleAvatar(
                             backgroundColor: Colors.grey[300],
@@ -82,120 +87,113 @@ class _SetApplockScreenState extends State<SetApplockScreen> {
                         
                         Form(
                           key: _formKey,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 27),
-                            child: Column(
-                              children: [
-                                TextFormField(
-                                  controller: _emailController,
-                                  keyboardType: TextInputType.emailAddress,
-                                  decoration: const InputDecoration(
-                                    hintText: 'Email'
-                                  ),
-                                  validator: (value) {
-                                    if(value == null || value.isEmpty){
-                                      return 'Please Enter your email';
-                                    }else if(!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)){
-                                      return 'Enter a valid Email';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                    
-                                const SizedBox(height: 15,),
-                    
-                                TextFormField(
-                                  controller: _nameController,
-                                  keyboardType: TextInputType.name,
-                                  textCapitalization: TextCapitalization.words,
-                                  decoration: const InputDecoration(
-                                    hintText: 'Name'
-                                  ),
-                                  validator: (value) {
-                                    if(value == null || value.isEmpty || value.trim().isEmpty){
-                                      return 'Please Enter your Name';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                    
-                                const SizedBox(height: 15,),
-                    
-                                TextFormField(
-                                  controller: _phoneNumberController,
-                                    keyboardType: TextInputType.number,
-                                    maxLength: 10,
-                                    decoration: const InputDecoration(
-                                        hintText: 'Phone Number'),
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please Enter your Phone Number';
-                                      }else if(value.length != 10){
-                                        return 'Enter a valid Number';
-                                      }
-                                      return null;
-                                    },
-                                ),
-                          
-                                const SizedBox(height: 15,),
-                    
-                                TextFormField(
-                                  controller: _pinController,
-                                  maxLength: 4,
-                                  keyboardType: TextInputType.number,
-                                  obscureText: true,
-                                  decoration: const InputDecoration(
-                                    hintText: 'PIN'
-                                  ),
-                                  validator: (value) {
-                                    if(value == null || value.isEmpty){
-                                      return 'Please Enter your PIN';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                    
-                                TextFormField(
-                                  controller: _confirmController,
-                                  maxLength: 4,
-                                  keyboardType: TextInputType.number,
-                                  obscureText: true,
-                                  decoration: const InputDecoration(
-                                    hintText: 'Confirm PIN'
-                                  ),
-                                  validator: (value) {
-                                    if(value == null || value.isEmpty){
-                                      return 'Enter your PIN to Confirm';
-                                    }else if(_pinController.text != value){
-                                      return "PIN doesn't match";
-                                    }
-                                    return null;
-                                  },
-                                ),
-                    
-                                TextButton(
-                                  onPressed: () {
-                                    settingPin(context);
-                                  },
-                                  style: TextButton.styleFrom(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 90),
-                                    backgroundColor: const Color(0xFFE27619),
-                                    foregroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
+                          child: Center(
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(
+                                maxWidth: screenWidth
+                                    ? 400
+                                    : double.infinity,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 27),
+                                child: Column(
+                                  children: [
+                                    TextFormField(
+                                      controller: _emailController,
+                                      keyboardType: TextInputType.emailAddress,
+                                      decoration: const InputDecoration(hintText: 'Email'),
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please Enter your email';
+                                        } else if (!RegExp(
+                                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                            .hasMatch(value)) {
+                                          return 'Enter a valid Email';
+                                        }
+                                        return null;
+                                      },
                                     ),
-                                  ),
-                                  child: const Text(
-                                    'Next',
-                                    style: TextStyle(fontSize: 20),
-                                  ),
+                                    const SizedBox(height: 15),
+                                    TextFormField(
+                                      controller: _nameController,
+                                      keyboardType: TextInputType.name,
+                                      textCapitalization: TextCapitalization.words,
+                                      decoration: const InputDecoration(hintText: 'Name'),
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty || value.trim().isEmpty) {
+                                          return 'Please Enter your Name';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    const SizedBox(height: 15),
+                                    TextFormField(
+                                      controller: _phoneNumberController,
+                                      keyboardType: TextInputType.number,
+                                      maxLength: 10,
+                                      decoration: const InputDecoration(hintText: 'Phone Number'),
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please Enter your Phone Number';
+                                        } else if (value.length != 10) {
+                                          return 'Enter a valid Number';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    const SizedBox(height: 15),
+                                    TextFormField(
+                                      controller: _pinController,
+                                      maxLength: 4,
+                                      keyboardType: TextInputType.number,
+                                      obscureText: true,
+                                      decoration: const InputDecoration(hintText: 'PIN'),
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please Enter your PIN';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    TextFormField(
+                                      controller: _confirmController,
+                                      maxLength: 4,
+                                      keyboardType: TextInputType.number,
+                                      obscureText: true,
+                                      decoration: const InputDecoration(hintText: 'Confirm PIN'),
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Enter your PIN to Confirm';
+                                        } else if (_pinController.text != value) {
+                                          return "PIN doesn't match";
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        settingPin(context);
+                                      },
+                                      style: TextButton.styleFrom(
+                                        padding: const EdgeInsets.symmetric(horizontal: 90),
+                                        backgroundColor: const Color(0xFFE27619),
+                                        foregroundColor: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                      child: const Text(
+                                        'Next',
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                    
-                              ],
+                              ),
                             ),
-                          )
+                          ),
                         ),
+
                         
                       ],
                     ),

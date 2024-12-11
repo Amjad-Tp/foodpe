@@ -1,7 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:fluttericon/linecons_icons.dart';
 import 'package:foodpe/functions/db_functions.dart';
 import 'package:foodpe/model/food_model.dart';
@@ -20,7 +21,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _openDrawerKey = GlobalKey<ScaffoldState>();
-  bool islisted = true;
   final List<String> filters = ["All", "Breakfast", "Lunch", "Snacks", "Dinner"];
   final _searchController = TextEditingController();
   String selectedItem = "All";
@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _searchController.addListener(_filterItems);
 
     final settingsBox = Hive.box('settingsBox');
-    isDarkMode = settingsBox.get('isDarkMode',defaultValue: false);
+    isDarkMode = settingsBox.get('isDarkMode', defaultValue: false);
 
     settingsBox.listenable().addListener(() {
       final newDarkMode = settingsBox.get('isDarkMode');
@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
           .toList();
     });
   }
-  
+
   void category(String category) {
     setState(() {
       selectedItem = category;
@@ -77,6 +77,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Get screen width
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       key: _openDrawerKey,
       drawer: const DrawerWidget(),
@@ -116,26 +119,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 5),
-                  InkWell(
-                    borderRadius: BorderRadius.circular(10),
-                    onTap: () {
-                      setState(() {
-                        islisted = !islisted;
-                      });
-                      final settingsBox = Hive.box('settingsBox');
-                      settingsBox.put('isListed', islisted);
-                    },
-                    child: islisted
-                        ? const Icon(
-                            Icons.format_list_bulleted_rounded,
-                            size: 30,
-                          )
-                        : const Icon(
-                            Boxicons.bx_category,
-                            size: 30,
-                          ),
-                  ),
                 ],
               ),
               const SizedBox(height: 10),
@@ -157,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           backgroundColor: isSelected
                               ? isDarkMode ? const Color(0xFF077B92) : const Color(0xFFE27619)
                               : Colors.transparent,
-                          side: BorderSide(color: isSelected ? isDarkMode ? const Color(0xFF077B92) : const Color(0xFFE27619) : isDarkMode ? Colors.white :const Color(0xFFE78D3E)),
+                          side: BorderSide(color: isSelected ? isDarkMode ? const Color(0xFF077B92) : const Color(0xFFE27619) : isDarkMode ? Colors.white : const Color(0xFFE78D3E)),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -169,10 +152,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           filter,
                           style: TextStyle(
                             color: isSelected
-                              ? Colors.white
-                              : isDarkMode
                                 ? Colors.white
-                                : Colors.black,
+                                : isDarkMode
+                                    ? Colors.white
+                                    : Colors.black,
                           ),
                         ),
                       ),
@@ -209,8 +192,94 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                             const SizedBox(height: 7),
-                            islisted
-                                ? ListView.builder(
+                            
+                            screenWidth > 500 // Large screen size (tablet and web)
+                                ? GridView.builder(
+                                    shrinkWrap: true,
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 3, // More columns for larger screens
+                                      mainAxisSpacing: 10,
+                                      crossAxisSpacing: 10,
+                                      childAspectRatio: 3 / 2,
+                                    ),
+                                    itemCount: filteredList.length,
+                                    itemBuilder: (context, index) {
+                                      final foodRecipe = filteredList[index];
+                                      return GestureDetector(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (ctx) =>
+                                                  FoodDetailsDB(foodRecipe: foodRecipe),
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.black,
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                          child: Stack(
+                                            fit: StackFit.expand,
+                                            children: [
+
+                                              ClipRRect(
+                                                borderRadius: BorderRadius.circular(10),
+                                                child: Opacity(
+                                                  opacity: 0.6,
+                                                  child: foodRecipe.foodImagePath != null
+                                                      ? kIsWeb
+                                                          ? Image.memory(
+                                                              base64Decode(foodRecipe.foodImagePath!),
+                                                              fit: BoxFit.cover,
+                                                            )
+                                                          : Image.file(
+                                                              File(foodRecipe.foodImagePath!),
+                                                              fit: BoxFit.cover,
+                                                            )
+                                                      : const Icon(
+                                                          Linecons.food,
+                                                          color: Color(0xFF5D5D5D),
+                                                          size: 100,
+                                                        ),
+                                                ),
+                                              ),
+
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 10),
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                  children: [
+                                                    Text(
+                                                      foodRecipe.title,
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight: FontWeight.w600,
+                                                        fontSize: screenWidth > 700 ? 30 : 20,
+                                                        height: 0.8,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      foodRecipe.category,
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight: FontWeight.w400,
+                                                        fontSize: screenWidth > 700 ? 21 : 15,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 10),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  )
+                                : ListView.builder(
                                     shrinkWrap: true,
                                     physics: const NeverScrollableScrollPhysics(),
                                     itemCount: filteredList.length,
@@ -242,10 +311,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   child: Opacity(
                                                     opacity: 0.7,
                                                     child: foodRecipe.foodImagePath != null
-                                                        ? Image.file(
-                                                            File(foodRecipe.foodImagePath!),
-                                                            fit: BoxFit.cover,
-                                                          )
+                                                        ? kIsWeb
+                                                            ? Image.memory(
+                                                                base64Decode(foodRecipe.foodImagePath!),
+                                                                fit: BoxFit.cover,
+                                                              )
+                                                            : Image.file(
+                                                                File(foodRecipe.foodImagePath!),
+                                                                fit: BoxFit.cover,
+                                                              )
                                                         : const Icon(
                                                             Linecons.food,
                                                             color: Color(0xFF5D5D5D),
@@ -287,85 +361,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                       );
                                     },
-                                  )
-                                : GridView.builder(
-                                    shrinkWrap: true,
-                                    physics: const NeverScrollableScrollPhysics(),
-                                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      mainAxisSpacing: 10,
-                                      crossAxisSpacing: 10,
-                                      childAspectRatio: 3 / 2,
-                                    ),
-                                    itemCount: filteredList.length,
-                                    itemBuilder: (context, index) {
-                                      final foodRecipe = filteredList[index];
-                                      return GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (ctx) =>
-                                                  FoodDetailsDB(foodRecipe: foodRecipe),
-                                            ),
-                                          );
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.black,
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          child: Stack(
-                                            fit: StackFit.expand,
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius: BorderRadius.circular(10),
-                                                child: Opacity(
-                                                  opacity: 0.7,
-                                                  child: foodRecipe.foodImagePath != null
-                                                      ? Image.file(
-                                                          File(foodRecipe.foodImagePath!),
-                                                          fit: BoxFit.cover,
-                                                        )
-                                                      : const Icon(
-                                                          Linecons.food,
-                                                          color: Color(0xFF5D5D5D),
-                                                          size: 100,
-                                                        ),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(left: 10),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  mainAxisAlignment: MainAxisAlignment.end,
-                                                  children: [
-                                                    Text(
-                                                      foodRecipe.title,
-                                                      style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight: FontWeight.w600,
-                                                        fontSize: 20,
-                                                        height: 0.8,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      foodRecipe.category,
-                                                      style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight: FontWeight.w400,
-                                                        fontSize: 15,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(height: 10),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
                                   ),
                           ],
                         )
@@ -381,6 +376,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
 }
-
