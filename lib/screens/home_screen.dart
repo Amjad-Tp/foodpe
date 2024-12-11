@@ -193,12 +193,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             const SizedBox(height: 7),
                             
-                            screenWidth > 500 // Large screen size (tablet and web)
+                            screenWidth > 500 
                                 ? GridView.builder(
                                     shrinkWrap: true,
                                     physics: const NeverScrollableScrollPhysics(),
                                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 3, // More columns for larger screens
+                                      crossAxisCount: 3,
                                       mainAxisSpacing: 10,
                                       crossAxisSpacing: 10,
                                       childAspectRatio: 3 / 2,
