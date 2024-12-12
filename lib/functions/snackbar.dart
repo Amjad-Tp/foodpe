@@ -13,7 +13,7 @@ void showMessage(BuildContext context, String message,Color backgroundColor, [Co
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
-      duration: const Duration(seconds: 3),
+      // duration: const Duration(seconds: 3),
     ),
   );
 }

@@ -70,20 +70,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         activeColor: Colors.grey[300],
                       ),
                     ),
-          
-                    InkWell(
-                      onTap: () {
-                        
-                      },
-                      child: const SizedBox(
-                        height: 50,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 15.0 ,vertical: 10),
-                          child: Text('Rest App',style: TextStyle(fontSize: 20),),
-                        ),
-                      ),
-                    )
-          
                   ],
                 ),
               )

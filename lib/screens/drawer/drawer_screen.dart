@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttericon/linecons_icons.dart';
 import 'package:foodpe/functions/db_functions.dart';
 import 'package:foodpe/model/user_model.dart';
+import 'package:foodpe/screens/drawer/food_plan_screen.dart';
 import 'package:foodpe/screens/drawer/food_quotes.dart';
 import 'package:foodpe/screens/drawer/privacy_policy.dart';
 import 'package:foodpe/screens/drawer/settings.dart';
@@ -92,6 +93,15 @@ class DrawerWidget extends StatelessWidget {
               text: 'Settings',
               onTap: (){
                 Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => const SettingsScreen()));
+              }
+            ),
+        
+            //----------your food plan
+            _buildDrawerItem(
+              icon: Linecons.paper_plane,
+              text: 'Daily Plan',
+              onTap: (){
+                Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => const FoodPlanScreen()));
               }
             ),
           ],

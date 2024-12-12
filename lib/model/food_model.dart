@@ -40,6 +40,9 @@ class Food extends HiveObject {
   @HiveField(11)
   bool isCollected;
 
+  @HiveField(12)
+  bool isAddedtoPlan;
+
   Food(
       {required this.foodImagePath,
       required this.title,
@@ -52,5 +55,6 @@ class Food extends HiveObject {
       required this.carbohydrates,
       required this.fats,
       this.isCollected = false,
+      this.isAddedtoPlan = false,
       this.id});
 }

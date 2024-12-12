@@ -51,7 +51,7 @@ class FoodQuotes extends StatelessWidget {
                         ),
                       ),
                       Positioned(
-                        top: 40,
+                        top: 10,
                         left: 10,
                         child: Row(
                           children: [
@@ -112,6 +112,7 @@ class FoodQuotes extends StatelessWidget {
           } else {
             // Default layout for small screens
             return ListView(
+              padding: EdgeInsets.zero,
               children: [
                 Stack(
                   children: [
