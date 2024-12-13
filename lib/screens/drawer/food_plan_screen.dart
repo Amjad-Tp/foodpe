@@ -31,7 +31,8 @@ class FoodPlanScreen extends StatelessWidget {
               valueListenable: foodListNotifier,
               builder: (context, foodList, child) {
                 final addedplan =
-                    foodList.where((food) => food.isAddedtoPlan).toList();
+                    foodList.where((food) => food.isAddedtoPlan).toList()
+                    ..sort((a,b) => a.addedtoList!.compareTo(b.addedtoList!));
                 if (addedplan.isEmpty) {
                   return const Center(
                     child: Text('No added to you plan'),

@@ -158,7 +158,7 @@ class _TermsConditionsState extends State<TermsConditions> {
     settingsBox.put('isSetApplock', true);
     settingsBox.put('applock', user.pin);
 
-    messageSnackBar('Account Created Successfully');
+    messageSnackBar('Welcome to Food Recipe Note App');
   }
 
   //snack bar

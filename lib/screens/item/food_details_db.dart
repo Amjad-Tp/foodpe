@@ -217,6 +217,12 @@ class _FoodDetailsDBState extends State<FoodDetailsDB> {
 
                   setState(() {
                     widget.foodRecipe.isAddedtoPlan = !widget.foodRecipe.isAddedtoPlan;
+
+                    if(widget.foodRecipe.isAddedtoPlan){
+                      widget.foodRecipe.addedtoList = DateTime.now();
+                    }else{
+                      widget.foodRecipe.addedtoList = null;
+                    }
                   });
 
                   await foodDB.put(widget.foodRecipe.id, widget.foodRecipe);
