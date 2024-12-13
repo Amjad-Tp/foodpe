@@ -30,13 +30,13 @@ class FoodAdapter extends TypeAdapter<Food> {
       isCollected: fields[11] as bool,
       isAddedtoPlan: fields[12] as bool,
       id: fields[10] as int?,
-    );
+    )..addedtoList = fields[13] as DateTime?;
   }
 
   @override
   void write(BinaryWriter writer, Food obj) {
     writer
-      ..writeByte(13)
+      ..writeByte(14)
       ..writeByte(0)
       ..write(obj.foodImagePath)
       ..writeByte(1)
@@ -62,7 +62,9 @@ class FoodAdapter extends TypeAdapter<Food> {
       ..writeByte(11)
       ..write(obj.isCollected)
       ..writeByte(12)
-      ..write(obj.isAddedtoPlan);
+      ..write(obj.isAddedtoPlan)
+      ..writeByte(13)
+      ..write(obj.addedtoList);
   }
 
   @override

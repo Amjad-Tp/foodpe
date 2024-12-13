@@ -26,8 +26,7 @@ class CollectionsScreen extends StatelessWidget {
               child: ValueListenableBuilder(
                 valueListenable: foodListNotifier,
                 builder: (context, foodList, child) {
-                  final collectedFood =
-                      foodList.where((food) => food.isCollected).toList();
+                  final collectedFood = foodList.where((food) => food.isCollected).toList()..sort((a, b) => a.addedtoList!.compareTo(b.addedtoList!));
                   if (collectedFood.isEmpty) {
                     return const Center(
                       child: Text('No collected items found.'),

@@ -14,8 +14,6 @@ class FoodPlanScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    double screenWidth = MediaQuery.of(context).size.width;
-
     List<String> addedCategory = ['BreakFast','Lunch','Snacks','Dinner'];
     
     return SafeArea(
@@ -25,7 +23,7 @@ class FoodPlanScreen extends StatelessWidget {
             OurAppBarTheme(
               title: 'Food Plan',
               onTap: () {
-                Navigator.of(context).pop();
+                Navigator.of(context).pop();  
               },
             ),
       

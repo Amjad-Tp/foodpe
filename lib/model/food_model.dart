@@ -43,6 +43,9 @@ class Food extends HiveObject {
   @HiveField(12)
   bool isAddedtoPlan;
 
+  @HiveField(13)
+  DateTime? addedtoList;
+
   Food(
       {required this.foodImagePath,
       required this.title,

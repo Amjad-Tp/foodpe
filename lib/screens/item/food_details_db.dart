@@ -236,6 +236,13 @@ class _FoodDetailsDBState extends State<FoodDetailsDB> {
                 onPressed: () async {
                   setState(() {
                     widget.foodRecipe.isCollected = !widget.foodRecipe.isCollected;
+
+                    if (widget.foodRecipe.isCollected) {
+                      widget.foodRecipe.addedtoList = DateTime.now();
+                    } else {
+                      widget.foodRecipe.addedtoList = null;
+                    }
+
                   });
 
                   final foodDB = Hive.box<Food>('foodBox');
