@@ -65,13 +65,22 @@ class _SplashScreenState extends State<SplashScreen> {
       }
     } else {
       final isSetApplock = settingsBox.get('isSetApplock', defaultValue: false);
+      final isUserLogged = settingsBox.get('isUserLogged', defaultValue: false);
 
-      if (isSetApplock) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (ctx) => const ApplockScreen(),
-          ),
-        );
+      if (isUserLogged) {
+        if (isSetApplock) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (ctx) => const ApplockScreen(),
+            ),
+          );
+        } else {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (ctx) => const BottomNavigation(),
+            ),
+          );
+        }
       } else {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(

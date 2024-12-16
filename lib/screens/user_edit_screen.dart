@@ -34,8 +34,10 @@ class _UserEditScreenState extends State<UserEditScreen> {
     _nameController = TextEditingController(text: widget.user.name);
     _phoneNumberController =
         TextEditingController(text: widget.user.phoneNumber);
-    _pinController = TextEditingController(text: widget.user.pin);
     _confirmController = TextEditingController(text: widget.user.pin);
+    if(widget.user.pin != null){
+      _pinController = TextEditingController(text: widget.user.pin);
+    }
   }
 
   @override
@@ -172,12 +174,6 @@ class _UserEditScreenState extends State<UserEditScreen> {
                                       keyboardType: TextInputType.number,
                                       obscureText: true,
                                       decoration: const InputDecoration(hintText: 'PIN'),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please Enter your PIN';
-                                        }
-                                        return null;
-                                      },
                                     ),
                                     TextFormField(
                                       controller: _confirmController,
@@ -186,9 +182,7 @@ class _UserEditScreenState extends State<UserEditScreen> {
                                       obscureText: true,
                                       decoration: const InputDecoration(hintText: 'Confirm PIN'),
                                       validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Enter your PIN to Confirm';
-                                        } else if (_pinController.text != value) {
+                                        if (_pinController.text != value) {
                                           return "PIN doesn't match";
                                         }
                                         return null;
@@ -283,9 +277,14 @@ class _UserEditScreenState extends State<UserEditScreen> {
       final settingsBox = Hive.box('settingsBox');
       final oldPin = settingsBox.get('applock');
 
-      if (_pinController.text != oldPin) {
-        final newPin = _pinController.text;
-        settingsBox.put('applock', newPin);
+      if (_pinController.text.isNotEmpty) {
+        if (_pinController.text != oldPin) {
+          final newPin = _pinController.text;
+          settingsBox.put('applock', newPin);
+        }
+        settingsBox.put('isSetApplock', true);
+      } else {
+        settingsBox.put('isSetApplock', false);
       }
 
       await resetPin(editedUser);

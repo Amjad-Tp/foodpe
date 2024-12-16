@@ -19,9 +19,9 @@ class UserAdapter extends TypeAdapter<User> {
     return User(
       name: fields[0] as String,
       email: fields[1] as String,
-      pin: fields[2] as String,
       phoneNumber: fields[4] as String,
       imagePath: fields[3] as String?,
+      pin: fields[2] as String?,
     );
   }
 

@@ -148,15 +148,18 @@ class _TermsConditionsState extends State<TermsConditions> {
 
   // add data
   Future<void> addUserData() async{
-    // final userBox = Hive.box<User>('userBox');
     final settingsBox = Hive.box('settingsBox');
+    final userBox = Hive.box<User>('userBox');
 
     final user = widget.user;
 
-    // await userBox.put(user.email, user); 
-
-    settingsBox.put('isSetApplock', true);
-    settingsBox.put('applock', user.pin);
+    userBox.put('userData', user);
+    
+    settingsBox.put('isUserLogged',true);
+    if(user.pin != null){
+      settingsBox.put('isSetApplock', true);
+      settingsBox.put('applock', user.pin);
+    }
 
     messageSnackBar('Welcome to Food Recipe Note App');
   }

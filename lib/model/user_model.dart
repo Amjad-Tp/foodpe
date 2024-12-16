@@ -12,7 +12,7 @@ class User extends HiveObject {
   final String email;
 
   @HiveField(2)
-  final String pin;
+  final String? pin;
 
   @HiveField(3)
   final String? imagePath;
@@ -20,5 +20,5 @@ class User extends HiveObject {
   @HiveField(4)
   final String phoneNumber;
 
-  User({required this.name, required this.email, required this.pin,required this.phoneNumber ,this.imagePath,});
+  User({required this.name, required this.email, required this.phoneNumber ,this.imagePath, this.pin,});
 }

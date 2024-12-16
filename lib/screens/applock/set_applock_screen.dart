@@ -141,19 +141,21 @@ class _SetApplockScreenState extends State<SetApplockScreen> {
                                         return null;
                                       },
                                     ),
-                                    const SizedBox(height: 15),
+
+                                    const Align(alignment: Alignment.centerLeft, child: Text('Set a Pin (Optional)',style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500),)),
+                                    const SizedBox(height: 5),
                                     TextFormField(
                                       controller: _pinController,
                                       maxLength: 4,
                                       keyboardType: TextInputType.number,
                                       obscureText: true,
                                       decoration: const InputDecoration(hintText: 'PIN'),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please Enter your PIN';
-                                        }
-                                        return null;
-                                      },
+                                      // validator: (value) {
+                                      //   if (value == null || value.isEmpty) {
+                                      //     return 'Please Enter your PIN';
+                                      //   }
+                                      //   return null;
+                                      // },
                                     ),
                                     TextFormField(
                                       controller: _confirmController,
@@ -161,14 +163,14 @@ class _SetApplockScreenState extends State<SetApplockScreen> {
                                       keyboardType: TextInputType.number,
                                       obscureText: true,
                                       decoration: const InputDecoration(hintText: 'Confirm PIN'),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Enter your PIN to Confirm';
-                                        } else if (_pinController.text != value) {
-                                          return "PIN doesn't match";
-                                        }
-                                        return null;
-                                      },
+                                      // validator: (value) {
+                                      //   if (value == null || value.isEmpty) {
+                                      //     return 'Enter your PIN to Confirm';
+                                      //   } else if (_pinController.text != value) {
+                                      //     return "PIN doesn't match";
+                                      //   }
+                                      //   return null;
+                                      // },
                                     ),
                                     TextButton(
                                       onPressed: () {
@@ -210,7 +212,6 @@ class _SetApplockScreenState extends State<SetApplockScreen> {
   //-------------Login validation
   Future<void> settingPin(BuildContext context) async {
     if(_formKey.currentState!.validate()){
-      // final userBox = Hive.box<User>('userBox');
       final email = _emailController.text.trim();
 
       final newApplock = User(
@@ -220,9 +221,6 @@ class _SetApplockScreenState extends State<SetApplockScreen> {
         phoneNumber: _phoneNumberController.text,
         imagePath: imagePath
       );
-
-      final userBox = Hive.box<User>('userBox');
-      userBox.put('userData', newApplock);
 
       Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => TermsConditions(user: newApplock,)));
     }
