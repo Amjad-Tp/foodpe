@@ -23,7 +23,7 @@ class IntroductionOne extends StatelessWidget {
               child: Align(
                 alignment: Alignment.topCenter,
                 child: Text(
-                  '30+ Premium Recipe',
+                  '20+ Premium Recipe',
                   style: TextStyle(color: Colors.white, fontSize: 15),
                 )
               ),

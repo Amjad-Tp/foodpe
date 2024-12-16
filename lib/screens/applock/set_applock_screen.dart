@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:foodpe/model/user_model.dart';
 import 'package:foodpe/screens/applock/terms_conditions.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:image_picker/image_picker.dart';
 
 class SetApplockScreen extends StatefulWidget {

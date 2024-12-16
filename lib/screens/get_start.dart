@@ -27,7 +27,7 @@ class GetStart extends StatelessWidget {
               child: Align(
                 alignment: Alignment.topCenter,
                 child: Text(
-                  '30+ Premium Recipe',
+                  '20+ Premium Recipe',
                   style: TextStyle(color: Colors.white, fontSize: 15),
                 )
               ),
@@ -61,7 +61,6 @@ class GetStart extends StatelessWidget {
                     //------Next button
                     TextButton(
                       onPressed: (){
-                        // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (ctx)=> LoginScreen()), (Route<dynamic> route) => false);
                         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (ctx)=> const SetApplockScreen()), (Route<dynamic> route) => false);
                       },
                       style: TextButton.styleFrom(

@@ -1,14 +1,11 @@
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttericon/linecons_icons.dart';
 import 'package:foodpe/functions/db_functions.dart';
 import 'package:foodpe/model/food_model.dart';
 import 'package:foodpe/model/user_model.dart';
+import 'package:foodpe/screens/code_Extraction/hardcode_retreive.dart';
+import 'package:foodpe/screens/code_Extraction/home_db_retrieve.dart';
 import 'package:foodpe/screens/drawer/drawer_screen.dart';
-import 'package:foodpe/screens/item/food_details_db.dart';
+import 'package:foodpe/screens/hardcoded/hardcoded_item.dart';
 import 'package:hive_flutter/adapters.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,11 +18,19 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _openDrawerKey = GlobalKey<ScaffoldState>();
-  final List<String> filters = ["All", "Breakfast", "Lunch", "Snacks", "Dinner"];
+  final List<String> filters = [
+    "All",
+    "Breakfast",
+    "Lunch",
+    "Snacks",
+    "Dinner"
+  ];
   final _searchController = TextEditingController();
   String selectedItem = "All";
 
   List<Food> filteredFoodList = [];
+
+  List<Map<String, String>> hardcodedFilteredItems = [];
 
   late bool isDarkMode;
 
@@ -33,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     filteredFoodList = foodListNotifier.value;
+    hardcodedFilteredItems = foodItems;
     _searchController.addListener(_filterItems);
 
     final settingsBox = Hive.box('settingsBox');
@@ -58,12 +64,19 @@ class _HomeScreenState extends State<HomeScreen> {
   void _filterItems() {
     final searchQuery = _searchController.text.toLowerCase();
     final foodList = foodListNotifier.value;
+    final hardcodedList = foodItems;
 
     setState(() {
       filteredFoodList = foodList
           .where((food) =>
               (selectedItem == "All" || food.category == selectedItem) &&
               food.title.toLowerCase().contains(searchQuery))
+          .toList();
+
+      hardcodedFilteredItems = hardcodedList
+          .where((food) =>
+              (selectedItem == "All" || food["category"] == selectedItem) &&
+              (food["name"] ?? "").toLowerCase().contains(searchQuery))
           .toList();
     });
   }
@@ -77,9 +90,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Get screen width
-    double screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
       key: _openDrawerKey,
       drawer: const DrawerWidget(),
@@ -106,14 +116,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       controller: _searchController,
                       decoration: InputDecoration(
                         hintText: 'Search',
-                        contentPadding: const EdgeInsets.only(left: 10, top: 0, bottom: 0),
+                        contentPadding:
+                            const EdgeInsets.only(left: 10, top: 0, bottom: 0),
                         hintStyle: const TextStyle(color: Colors.grey),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: isDarkMode ? Colors.white : Colors.black),
+                          borderSide: BorderSide(
+                              color: isDarkMode ? Colors.white : Colors.black),
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: isDarkMode ? Colors.white : Colors.black),
+                          borderSide: BorderSide(
+                              color: isDarkMode ? Colors.white : Colors.black),
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
@@ -138,9 +151,18 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: OutlinedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(horizontal: 13),
                           backgroundColor: isSelected
-                              ? isDarkMode ? const Color(0xFF077B92) : const Color(0xFFE27619)
+                              ? isDarkMode
+                                  ? const Color(0xFF077B92)
+                                  : const Color(0xFFE27619)
                               : Colors.transparent,
-                          side: BorderSide(color: isSelected ? isDarkMode ? const Color(0xFF077B92) : const Color(0xFFE27619) : isDarkMode ? Colors.white : const Color(0xFFE78D3E)),
+                          side: BorderSide(
+                              color: isSelected
+                                  ? isDarkMode
+                                      ? const Color(0xFF077B92)
+                                      : const Color(0xFFE27619)
+                                  : isDarkMode
+                                      ? Colors.white
+                                      : const Color(0xFFE78D3E)),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -163,217 +185,21 @@ class _HomeScreenState extends State<HomeScreen> {
                   }).toList(),
                 ),
               ),
-              const SizedBox(height: 10),
 
-              // Display the filtered list
-              ValueListenableBuilder<List<Food>>(
-                valueListenable: foodListNotifier,
-                builder: (context, foodList, child) {
-                  final filteredList = foodList
-                      .where((food) =>
-                          (selectedItem == "All" || food.category == selectedItem) &&
-                          food.title.toLowerCase().contains(_searchController.text.toLowerCase()))
-                      .toList();
-
-                  return filteredList.isNotEmpty
-                      ? Column(
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.only(left: 7.0),
-                              child: Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  'My Recipe',
-                                  style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.w600,
-                                      height: 1),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 7),
-                            
-                            screenWidth > 500 
-                                ? GridView.builder(
-                                    shrinkWrap: true,
-                                    physics: const NeverScrollableScrollPhysics(),
-                                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 3,
-                                      mainAxisSpacing: 10,
-                                      crossAxisSpacing: 10,
-                                      childAspectRatio: 3 / 2,
-                                    ),
-                                    itemCount: filteredList.length,
-                                    itemBuilder: (context, index) {
-                                      final foodRecipe = filteredList[index];
-                                      return GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (ctx) =>
-                                                  FoodDetailsDB(foodRecipe: foodRecipe),
-                                            ),
-                                          );
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.black,
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          child: Stack(
-                                            fit: StackFit.expand,
-                                            children: [
-
-                                              ClipRRect(
-                                                borderRadius: BorderRadius.circular(10),
-                                                child: Opacity(
-                                                  opacity: 0.6,
-                                                  child: foodRecipe.foodImagePath != null
-                                                      ? kIsWeb
-                                                          ? Image.memory(
-                                                              base64Decode(foodRecipe.foodImagePath!),
-                                                              fit: BoxFit.cover,
-                                                            )
-                                                          : Image.file(
-                                                              File(foodRecipe.foodImagePath!),
-                                                              fit: BoxFit.cover,
-                                                            )
-                                                      : const Icon(
-                                                          Linecons.food,
-                                                          color: Color(0xFF5D5D5D),
-                                                          size: 100,
-                                                        ),
-                                                ),
-                                              ),
-
-                                              Padding(
-                                                padding: const EdgeInsets.only(left: 10),
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  mainAxisAlignment: MainAxisAlignment.end,
-                                                  children: [
-                                                    Text(
-                                                      foodRecipe.title,
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight: FontWeight.w600,
-                                                        fontSize: screenWidth > 700 ? 30 : 20,
-                                                        height: 0.8,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      foodRecipe.category,
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight: FontWeight.w400,
-                                                        fontSize: screenWidth > 700 ? 21 : 15,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(height: 10),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  )
-                                : ListView.builder(
-                                    shrinkWrap: true,
-                                    physics: const NeverScrollableScrollPhysics(),
-                                    itemCount: filteredList.length,
-                                    itemBuilder: (context, index) {
-                                      final foodRecipe = filteredList[index];
-                                      return Padding(
-                                        padding: const EdgeInsets.only(bottom: 15.0),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder: (ctx) =>
-                                                    FoodDetailsDB(foodRecipe: foodRecipe),
-                                              ),
-                                            );
-                                          },
-                                          child: Container(
-                                            width: double.infinity,
-                                            height: 170,
-                                            decoration: BoxDecoration(
-                                              color: Colors.black,
-                                              borderRadius: BorderRadius.circular(10),
-                                            ),
-                                            child: Stack(
-                                              fit: StackFit.expand,
-                                              children: [
-                                                ClipRRect(
-                                                  borderRadius: BorderRadius.circular(10),
-                                                  child: Opacity(
-                                                    opacity: 0.7,
-                                                    child: foodRecipe.foodImagePath != null
-                                                        ? kIsWeb
-                                                            ? Image.memory(
-                                                                base64Decode(foodRecipe.foodImagePath!),
-                                                                fit: BoxFit.cover,
-                                                              )
-                                                            : Image.file(
-                                                                File(foodRecipe.foodImagePath!),
-                                                                fit: BoxFit.cover,
-                                                              )
-                                                        : const Icon(
-                                                            Linecons.food,
-                                                            color: Color(0xFF5D5D5D),
-                                                            size: 100,
-                                                          ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets.only(left: 10),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
-                                                    mainAxisAlignment: MainAxisAlignment.end,
-                                                    children: [
-                                                      Text(
-                                                        foodRecipe.title,
-                                                        style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight: FontWeight.w600,
-                                                          fontSize: 26,
-                                                          height: 0.8,
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        foodRecipe.category,
-                                                        style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight: FontWeight.w400,
-                                                          fontSize: 17,
-                                                        ),
-                                                      ),
-                                                      const SizedBox(height: 10),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                          ],
-                        )
-                      : const Padding(
-                          padding: EdgeInsets.only(top: 10.0),
-                          child: Center(child: Text('No Food added')),
-                        );
-                },
+              const SizedBox(
+                height: 10,
               ),
-            ],
+
+                // Display the filtered list
+                HomeDbRetrieve(selectedItem: selectedItem, searchController: _searchController),
+
+                //Hard coded item
+                HardcodeRetreive(hardcodedFilteredItems: hardcodedFilteredItems)
+              ],
+            )
           ),
-        ),
-      ),
-    );
+        )
+      );
+    }
   }
-}
+
