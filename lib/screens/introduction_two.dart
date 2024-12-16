@@ -23,12 +23,15 @@ class IntroductionTwo extends StatelessWidget {
             ),
           ),
           const SafeArea(
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: Text(
-                '30+ Premium Recipe',
-                style: TextStyle(color: Colors.white, fontSize: 15),
-              )
+            child: Padding(
+              padding: EdgeInsets.only(top: 15.0),
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: Text(
+                  '30+ Premium Recipe',
+                  style: TextStyle(color: Colors.white, fontSize: 15),
+                )
+              ),
             ),
           ),
     
@@ -38,28 +41,22 @@ class IntroductionTwo extends StatelessWidget {
             child: Container(
               width: double.infinity,
               height: 300,
-              decoration: BoxDecoration(
-                  color: const Color(0xFF162128),
-                  borderRadius: const BorderRadius.only(
+              decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.5),
-                        spreadRadius: 5,
-                        blurRadius: 10,
-                        offset: const Offset(0, -5))
-                  ]),
+                  ),
               child:Padding(
                 padding: const EdgeInsets.only(top: 25),
                 child:  Column(
                   children: [
     
                     //----------Description
-                    const Text('Save & Share',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500,fontSize: 20),),
+                    const Text('Save & Share',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w500,fontSize: 20),),
                     const Text('Save your favorite recipes for quick access,\nand share your creations with the\ncommunity! Choose Your Skill Level\nfrom beginner to advanced, choose recipes\nbased on your cooking experience',
-                        style: TextStyle(color: Colors.white,fontWeight: FontWeight.w300,fontSize: 18),
+                        style: TextStyle(color: Colors.black,fontWeight: FontWeight.w300,fontSize: 18),
                         textAlign: TextAlign.center,
                     ),
     
@@ -68,7 +65,7 @@ class IntroductionTwo extends StatelessWidget {
                     //------Next button
                     TextButton(
                       onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (ctx) => GetStart()));
+                        Navigator.push(context, MaterialPageRoute(builder: (ctx) => const GetStart()));
                       },
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.symmetric(horizontal: 90, vertical: 10),
@@ -89,9 +86,9 @@ class IntroductionTwo extends StatelessWidget {
                           alignment: Alignment.topRight,
                           child: TextButton(
                             onPressed: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (ctx) => IntroductionOne()));
+                              Navigator.push(context, MaterialPageRoute(builder: (ctx) => const IntroductionOne()));
                             },
-                            child: const Text('Back',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w400),)),
+                            child: const Text('Back',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w400),)),
                         ),
     
                         //-------Skip Button
@@ -99,9 +96,9 @@ class IntroductionTwo extends StatelessWidget {
                           alignment: Alignment.topRight,
                           child: TextButton(
                             onPressed: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (ctx) => GetStart()));
+                              Navigator.push(context, MaterialPageRoute(builder: (ctx) => const GetStart()));
                             },
-                            child: const Text('Skip',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w400),)),
+                            child: const Text('Skip',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w400),)),
                         )
                       ],
                     )

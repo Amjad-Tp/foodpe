@@ -18,12 +18,16 @@ class IntroductionOne extends StatelessWidget {
                 'assets/images/delicious-burger-with-fresh-ingredients.jpg'),
           ),
           const SafeArea(
-            child: Align(
+            child: Padding(
+              padding: EdgeInsets.only(top: 15.0),
+              child: Align(
                 alignment: Alignment.topCenter,
                 child: Text(
                   '30+ Premium Recipe',
                   style: TextStyle(color: Colors.white, fontSize: 15),
-                )),
+                )
+              ),
+            ),
           ),
     
           //----------container
@@ -32,19 +36,13 @@ class IntroductionOne extends StatelessWidget {
             child: Container(
               width: double.infinity,
               height: 300,
-              decoration: BoxDecoration(
-                  color: const Color(0xFF162128),
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.5),
-                        spreadRadius: 5,
-                        blurRadius: 10,
-                        offset: const Offset(0, -5))
-                  ]),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+              ),
               child:Padding(
                 padding: const EdgeInsets.only(top: 35),
                 child:  Column(
@@ -53,7 +51,7 @@ class IntroductionOne extends StatelessWidget {
                     //----------Description
                     const Text.rich(
                       TextSpan(
-                        text: 'Welcome to ',style: TextStyle(color: Colors.white,fontSize: 19,fontWeight: FontWeight.w300),
+                        text: 'Welcome to ',style: TextStyle(color: Colors.black,fontSize: 19,fontWeight: FontWeight.w300),
                         children: [
                           TextSpan(
                             text: 'FoodPe ',style: TextStyle(fontWeight: FontWeight.w600)
@@ -71,7 +69,7 @@ class IntroductionOne extends StatelessWidget {
                     //------Next button
                     TextButton(
                       onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (ctx) => IntroductionTwo()));
+                        Navigator.push(context, MaterialPageRoute(builder: (ctx) => const IntroductionTwo()));
                       },
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.symmetric(horizontal: 90, vertical: 10),
@@ -89,9 +87,9 @@ class IntroductionOne extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       child: TextButton(
                         onPressed: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (ctx) => GetStart()));
+                          Navigator.push(context, MaterialPageRoute(builder: (ctx) => const GetStart()));
                         },
-                        child: const Text('Skip',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w400),)),
+                        child: const Text('Skip',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w400),)),
                     )
     
                   ],

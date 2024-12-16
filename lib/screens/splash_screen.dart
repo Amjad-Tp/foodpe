@@ -29,15 +29,12 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     getAllFoods();
     return Scaffold(
-      backgroundColor: const Color(0xFF162128),
+      backgroundColor: Colors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/images/logo.jpg', width: 100),
-            const SizedBox(height: 10),
-            const Text('FoodPe',
-                style: TextStyle(color: Colors.white, fontSize: 20)),
+            Image.asset('assets/images/logo.jpg', width: 150),
           ],
         ),
       ),

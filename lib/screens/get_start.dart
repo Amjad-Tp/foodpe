@@ -22,12 +22,15 @@ class GetStart extends StatelessWidget {
             ),
           ),
           const SafeArea(
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: Text(
-                '30+ Premium Recipe',
-                style: TextStyle(color: Colors.white, fontSize: 15),
-              )
+            child: Padding(
+              padding: EdgeInsets.only(top: 15.0),
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: Text(
+                  '30+ Premium Recipe',
+                  style: TextStyle(color: Colors.white, fontSize: 15),
+                )
+              ),
             ),
           ),
     
@@ -37,25 +40,19 @@ class GetStart extends StatelessWidget {
             child: Container(
               width: double.infinity,
               height: 300,
-              decoration: BoxDecoration(
-                  color: const Color(0xFF162128),
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.5),
-                        spreadRadius: 5,
-                        blurRadius: 10,
-                        offset: const Offset(0, -5))
-                  ]),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+              ),
               child:Padding(
                 padding: const EdgeInsets.only(top: 40),
                 child:  Column(
                   children: [
                     const Text('Ready to start\nyour cooking\njourney?',
-                        style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700,fontSize: 36,height: 1.1),
+                        style: TextStyle(color: Colors.black,fontWeight: FontWeight.w700,fontSize: 36,height: 1.1),
                         textAlign: TextAlign.center,
                     ),
     
@@ -85,7 +82,7 @@ class GetStart extends StatelessWidget {
                             onPressed: (){
                               Navigator.push(context, MaterialPageRoute(builder: (ctx) => const IntroductionTwo()));
                             },
-                            child: const Text('Back',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w400),)),
+                            child: const Text('Back',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w400),)),
                         ),
                   ],
                 ),

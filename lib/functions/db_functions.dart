@@ -71,25 +71,3 @@ Future<void> editFoodRecipe(int index, Food editedFood) async {
 
   await getAllFoods();
 }
-
-// //-----------------Remove Collection Item
-// Future<void> collectionRemove(Food item, int id) async{
-//   final foodDB = await Hive.openBox<Food>('foodBox');
-
-//   item.isCollected = false;
-
-//   await foodDB.put(id, item);
-
-//   await getAllFoods();
-// }
-
-// //-----------------Remove Collection Item
-// Future<void> removeFromFoodPlan(Food item, int id) async{
-//   final foodDB = await Hive.openBox<Food>('foodBox');
-
-//   item.isAddedtoPlan = false;
-
-//   await foodDB.put(id, item);
-
-//   await getAllFoods();
-// }
