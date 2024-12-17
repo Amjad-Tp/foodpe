@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/linecons_icons.dart';
 import 'package:foodpe/functions/db_functions.dart';
-import 'package:foodpe/functions/snackbar.dart';
 import 'package:foodpe/model/food_model.dart';
 import 'package:foodpe/screens/item/nutritional_db.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -123,8 +122,7 @@ class _FoodDetailsDBState extends State<FoodDetailsDB> {
             ),
           ),
           const SizedBox(height: 15),
-          Text(
-            widget.foodRecipe.preparation,
+          Text(widget.foodRecipe.preparation,
             style: const TextStyle(fontSize: 20),
           ),
           const SizedBox(height: 15),
@@ -169,8 +167,7 @@ class _FoodDetailsDBState extends State<FoodDetailsDB> {
                   base64Decode(widget.foodRecipe.foodImagePath!),
                   fit: BoxFit.cover,
                 )
-              : Image.file(
-                  File(widget.foodRecipe.foodImagePath!),
+              : Image.file(File(widget.foodRecipe.foodImagePath!),
                   fit: BoxFit.cover,
                 ),
         Container(
@@ -187,8 +184,7 @@ class _FoodDetailsDBState extends State<FoodDetailsDB> {
             ),
           ),
           child: widget.foodRecipe.foodImagePath == null
-              ? const Icon(Linecons.food,size: 130,color: Colors.white,
-                )
+              ? const Icon(Linecons.food,size: 130,color: Colors.white,)
               : null,
         ),
         Positioned(
@@ -202,68 +198,28 @@ class _FoodDetailsDBState extends State<FoodDetailsDB> {
         Positioned(
           top: 40,
           right: 10,
-          child: Row(
-            children: [
-              //----------Add to Food Plan
-              IconButton(
-                onPressed: () async {
-                  final foodDB = Hive.box<Food>('foodBox');
-                  final currentPlan = foodDB.values.where((food) => food.isAddedtoPlan).toList();
-
-                  if (!widget.foodRecipe.isAddedtoPlan && currentPlan.length >= 4) {
-                    showMessage(context, 'You are reached your limit', Colors.white, Colors.black);
-                    return;
-                  }
-
-                  setState(() {
-                    widget.foodRecipe.isAddedtoPlan = !widget.foodRecipe.isAddedtoPlan;
-
-                    if(widget.foodRecipe.isAddedtoPlan){
-                      widget.foodRecipe.addedtoList = DateTime.now();
-                    }else{
-                      widget.foodRecipe.addedtoList = null;
-                    }
-                  });
-
-                  await foodDB.put(widget.foodRecipe.id, widget.foodRecipe);
-                  foodListNotifier.value = foodDB.values.toList().cast<Food>();
-                },
-                icon: Icon(
-                  widget.foodRecipe.isAddedtoPlan
-                      ? Icons.add_circle_rounded
-                      : Icons.add_circle_outline_rounded,
-                  size: 35,
-                  color: Colors.white,
-                ),
-              ),
-
-              //----------Add to Collection
-              IconButton(
-                onPressed: () async {
-                  setState(() {
-                    widget.foodRecipe.isCollected = !widget.foodRecipe.isCollected;
-
-                    if (widget.foodRecipe.isCollected) {
-                      widget.foodRecipe.addedtoList = DateTime.now();
-                    } else {
-                      widget.foodRecipe.addedtoList = null;
-                    }
-
-                  });
-
-                  final foodDB = Hive.box<Food>('foodBox');
-                  await foodDB.put(widget.foodRecipe.id, widget.foodRecipe);
-                  foodListNotifier.value = foodDB.values.toList().cast<Food>();
-                },
-                icon: Icon(
-                  widget.foodRecipe.isCollected
-                      ? Icons.bookmark_rounded
-                      : Icons.bookmark_outline_rounded,
-                  size: 35,
-                  color: Colors.white,
-                ),
-              ),
-            ],
+          child: IconButton(
+            onPressed: () async {
+              setState(() {
+                widget.foodRecipe.isCollected = !widget.foodRecipe.isCollected;
+          
+                if (widget.foodRecipe.isCollected) {
+                  widget.foodRecipe.addedtoList = DateTime.now();
+                } else {
+                  widget.foodRecipe.addedtoList = null;
+                }
+          
+              });
+          
+              final foodDB = Hive.box<Food>('foodBox');
+              await foodDB.put(widget.foodRecipe.id, widget.foodRecipe);
+              foodListNotifier.value = foodDB.values.toList().cast<Food>();
+            },
+            icon: Icon(
+              widget.foodRecipe.isCollected? Icons.bookmark_rounded : Icons.bookmark_outline_rounded,
+              size: 35,
+              color: Colors.white,
+            ),
           )
         ),
       ],

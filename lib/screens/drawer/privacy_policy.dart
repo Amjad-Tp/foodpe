@@ -21,7 +21,7 @@ class PrivacyPolicy extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: ListView(
+        body: Column(
           children: [
       
             OurAppBarTheme(
@@ -30,11 +30,10 @@ class PrivacyPolicy extends StatelessWidget {
                 Navigator.pop(context);
               },
             ),
-      
-            const SizedBox(height: 10,),
             
             Expanded(
               child: ListView.builder(
+                padding: const EdgeInsets.only(top: 10),
                 shrinkWrap: true,
                 itemCount: privacyPolicies.length,
                 itemBuilder: (context, index) {

@@ -156,9 +156,12 @@ class _TermsConditionsState extends State<TermsConditions> {
     userBox.put('userData', user);
     
     settingsBox.put('isUserLogged',true);
-    if(user.pin != null){
+
+    if (user.pin != null && user.pin!.isNotEmpty) {
       settingsBox.put('isSetApplock', true);
       settingsBox.put('applock', user.pin);
+    } else {
+      settingsBox.put('isSetApplock', false);
     }
 
     messageSnackBar('Welcome to Food Recipe Note App');
