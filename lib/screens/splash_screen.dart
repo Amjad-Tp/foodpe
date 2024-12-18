@@ -50,7 +50,6 @@ class _SplashScreenState extends State<SplashScreen> {
       final isFirstTimeWeb = settingsBox.get('isFirstTimeWeb', defaultValue: true);
 
       if (isFirstTimeWeb) {
-        settingsBox.put('isFirstTimeWeb', false);
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (ctx) => const SetApplockScreen(),

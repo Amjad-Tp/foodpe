@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:foodpe/functions/snackbar.dart';
 import 'package:foodpe/model/user_model.dart';
@@ -120,7 +121,7 @@ class _TermsConditionsState extends State<TermsConditions> {
                               await Future.delayed(const Duration(seconds: 1));
                               Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute( builder: (context) => const BottomNavigation()), (Route<dynamic> route) => false);
                             } else {
-                              showMessage(context,"I like your Smart, Don't try to be Over smart",Colors.black);
+                              showMessage(context,"I like your Smart, Don't try to be Over smart",Colors.white);
                             }
                           }, text: 'Enter',
                         )
@@ -153,6 +154,10 @@ class _TermsConditionsState extends State<TermsConditions> {
       settingsBox.put('applock', user.pin);
     } else {
       settingsBox.put('isSetApplock', false);
+    }
+
+    if(kIsWeb){
+      settingsBox.put('isFirstTimeWeb', false);
     }
 
     showMessage(context,'Welcome to Food Recipe Note App',Colors.white);
