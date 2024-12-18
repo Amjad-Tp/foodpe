@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:foodpe/functions/nr_functions.dart';
 import 'package:foodpe/model/user_model.dart';
 import 'package:foodpe/screens/applock/terms_conditions.dart';
+import 'package:foodpe/screens/code_Extraction/text_button_usable.dart';
 import 'package:image_picker/image_picker.dart';
 
 class SetApplockScreen extends StatefulWidget {
@@ -101,16 +103,7 @@ class _SetApplockScreenState extends State<SetApplockScreen> {
                                       controller: _emailController,
                                       keyboardType: TextInputType.emailAddress,
                                       decoration: const InputDecoration(hintText: 'Email'),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please Enter your email';
-                                        } else if (!RegExp(
-                                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                            .hasMatch(value)) {
-                                          return 'Enter a valid Email';
-                                        }
-                                        return null;
-                                      },
+                                      validator: (value) => validateField(value: value, fieldName: 'Email', email: value)
                                     ),
                                     const SizedBox(height: 15),
                                     TextFormField(
@@ -118,12 +111,7 @@ class _SetApplockScreenState extends State<SetApplockScreen> {
                                       keyboardType: TextInputType.name,
                                       textCapitalization: TextCapitalization.words,
                                       decoration: const InputDecoration(hintText: 'Name'),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty || value.trim().isEmpty) {
-                                          return 'Please Enter your Name';
-                                        }
-                                        return null;
-                                      },
+                                      validator: (value) => validateField(value: value, fieldName: 'User Name')
                                     ),
                                     const SizedBox(height: 15),
                                     TextFormField(
@@ -131,14 +119,7 @@ class _SetApplockScreenState extends State<SetApplockScreen> {
                                       keyboardType: TextInputType.number,
                                       maxLength: 10,
                                       decoration: const InputDecoration(hintText: 'Phone Number'),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please Enter your Phone Number';
-                                        } else if (value.length != 10) {
-                                          return 'Enter a valid Number';
-                                        }
-                                        return null;
-                                      },
+                                      validator: (value) => validateField(value: value, fieldName: "Phone Number", allowedValues: value),
                                     ),
 
                                     const Align(alignment: Alignment.centerLeft, child: Text('Set a Pin (Optional)',style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500),)),
@@ -149,12 +130,6 @@ class _SetApplockScreenState extends State<SetApplockScreen> {
                                       keyboardType: TextInputType.number,
                                       obscureText: true,
                                       decoration: const InputDecoration(hintText: 'PIN'),
-                                      // validator: (value) {
-                                      //   if (value == null || value.isEmpty) {
-                                      //     return 'Please Enter your PIN';
-                                      //   }
-                                      //   return null;
-                                      // },
                                     ),
                                     TextFormField(
                                       controller: _confirmController,
@@ -162,32 +137,15 @@ class _SetApplockScreenState extends State<SetApplockScreen> {
                                       keyboardType: TextInputType.number,
                                       obscureText: true,
                                       decoration: const InputDecoration(hintText: 'Confirm PIN'),
-                                      // validator: (value) {
-                                      //   if (value == null || value.isEmpty) {
-                                      //     return 'Enter your PIN to Confirm';
-                                      //   } else if (_pinController.text != value) {
-                                      //     return "PIN doesn't match";
-                                      //   }
-                                      //   return null;
-                                      // },
+                                      validator: (value) => _pinController.text != value ? "PIN doesn't match" : null
                                     ),
-                                    TextButton(
+                                    // --------Next Button---------
+                                    TextButtonUsable(
+                                      backgroundColor: const Color(0xFFE27619),
                                       onPressed: () {
                                         settingPin(context);
-                                      },
-                                      style: TextButton.styleFrom(
-                                        padding: const EdgeInsets.symmetric(horizontal: 90),
-                                        backgroundColor: const Color(0xFFE27619),
-                                        foregroundColor: Colors.white,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
-                                      ),
-                                      child: const Text(
-                                        'Next',
-                                        style: TextStyle(fontSize: 20),
-                                      ),
-                                    ),
+                                      }, text: 'Next',
+                                    )
                                   ],
                                 ),
                               ),
@@ -220,26 +178,10 @@ class _SetApplockScreenState extends State<SetApplockScreen> {
         phoneNumber: _phoneNumberController.text,
         imagePath: imagePath
       );
-
       Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => TermsConditions(user: newApplock,)));
     }
   }
 
-  //--------------------Snack Bar-----------------
-  void messageSnackBar(BuildContext context,String message){
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        margin: const EdgeInsets.all(16),
-        // backgroundColor: Colors.white,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        duration: const Duration(seconds: 2),
-      ),
-    );
-  }
   @override
   void dispose() {
     super.dispose();

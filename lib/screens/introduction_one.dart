@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:foodpe/screens/get_start.dart';
-import 'package:foodpe/screens/introduction_two.dart';
+import 'package:foodpe/screens/applock/set_applock_screen.dart';
+import 'package:foodpe/screens/code_Extraction/text_button_usable.dart';
 
 class IntroductionOne extends StatelessWidget {
   const IntroductionOne({super.key});
@@ -43,13 +43,13 @@ class IntroductionOne extends StatelessWidget {
                   topRight: Radius.circular(20),
                 ),
               ),
-              child:Padding(
-                padding: const EdgeInsets.only(top: 35),
+              child: const Padding(
+                padding: EdgeInsets.only(top: 35),
                 child:  Column(
                   children: [
                 
                     //----------Description
-                    const Text.rich(
+                    Text.rich(
                       TextSpan(
                         text: 'Welcome to ',style: TextStyle(color: Colors.black,fontSize: 19,fontWeight: FontWeight.w300),
                         children: [
@@ -63,37 +63,21 @@ class IntroductionOne extends StatelessWidget {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                
-                    const SizedBox(height: 20,),
-                
-                    //------Next button
-                    TextButton(
-                      onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (ctx) => const IntroductionTwo()));
-                      },
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 90, vertical: 10),
-                        backgroundColor: const Color(0xFFE27619),
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)
-                        )
-                      ),
-                      child: const Text('Next',style: TextStyle(fontSize: 20),),
-                    ),
-    
-                    //-------Skip Button
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (ctx) => const GetStart()));
-                        },
-                        child: const Text('Skip',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w400),)),
-                    )
-    
+
                   ],
                 ),
+              ),
+            ),
+          ),
+
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 65.0),
+              child: TextButtonUsable(
+                backgroundColor: const Color(0xFFE27619),
+                onPressed: () => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute( builder: (context) => const SetApplockScreen()), (Route<dynamic> route) => false),
+                text: 'Get Start'
               ),
             ),
           ),

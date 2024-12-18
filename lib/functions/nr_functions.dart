@@ -47,3 +47,35 @@ Future<void> publishingFood(
   showMessage(
       context, 'Your Food Recipe added succefully', Colors.white, Colors.black);
 }
+
+
+// function for validators
+String? validateField({
+  required String? value,
+  required String fieldName,
+  String? allowedValues,
+  String? email,
+  bool isNumeric = false,
+  bool isRequired = true,
+}) {
+  if (isRequired && (value == null || value.trim().isEmpty)) {
+    return '$fieldName is required';
+  }
+
+  if (isNumeric) {
+    final numValue = num.tryParse(value!);
+    if (numValue == null || numValue <= 0) {
+      return '$fieldName must be a valid number';
+    }
+  }
+
+  if (allowedValues != null && allowedValues.length < 10) {
+    return 'Enter valid Phonenumber';
+  }
+
+  if (email != null && !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email)) {
+    return 'Enter a valid Email';
+  }
+
+  return null;
+}

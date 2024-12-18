@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:foodpe/functions/snackbar.dart';
 import 'package:foodpe/model/user_model.dart';
 import 'package:foodpe/screens/bottomNavigation.dart';
+import 'package:foodpe/screens/code_Extraction/text_button_usable.dart';
 import 'package:hive_flutter/adapters.dart';
 
 class TermsConditions extends StatefulWidget {
@@ -110,29 +112,18 @@ class _TermsConditionsState extends State<TermsConditions> {
                       
                       Align(
                         alignment: Alignment.center,
-                        child: TextButton(
+                        child: TextButtonUsable(
+                          backgroundColor: isAgreed ? const Color(0xFFE27619) : Colors.grey[300] ?? Colors.grey,
                           onPressed: () async{
                             if (isAgreed) {
                               await addUserData();
                               await Future.delayed(const Duration(seconds: 1));
-                              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (ctx)=> BottomNavigation()), (Route<dynamic> route) => false);
+                              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute( builder: (context) => const BottomNavigation()), (Route<dynamic> route) => false);
                             } else {
-                              messageSnackBar("You're Smart, Don't try to be Over smart");
+                              showMessage(context,"I like your Smart, Don't try to be Over smart",Colors.black);
                             }
-                          },
-                          style: TextButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(horizontal: 90),
-                            backgroundColor: isAgreed ? const Color(0xFFE27619) : Colors.grey[300],
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          child: const Text(
-                            'Log in',
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        ),
+                          }, text: 'Enter',
+                        )
                       ),
                           
                     ]
@@ -164,22 +155,6 @@ class _TermsConditionsState extends State<TermsConditions> {
       settingsBox.put('isSetApplock', false);
     }
 
-    messageSnackBar('Welcome to Food Recipe Note App');
-  }
-
-  //snack bar
-  void messageSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message,style: const TextStyle(color: Colors.black),),
-        margin: const EdgeInsets.all(16),
-        backgroundColor: Colors.white,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        // duration: const Duration(seconds: 2),
-      )
-    );
+    showMessage(context,'Welcome to Food Recipe Note App',Colors.white);
   }
 }

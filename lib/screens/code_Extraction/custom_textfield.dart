@@ -122,3 +122,59 @@ class NutritionalTextField extends StatelessWidget {
   }
 }
 
+//-----------Green & Orange Button for saving data
+class SavingGreenOrange extends StatelessWidget {
+  final VoidCallback onPressed;
+  final String text;
+  const SavingGreenOrange({super.key, required this.onPressed, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    final isDarkMode = themeNotifier.value;
+    return TextButton(
+      onPressed: onPressed,
+      style: TextButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
+        backgroundColor: isDarkMode ? const Color(0xFF8ec43f) : const Color(0xFFE08C43),
+        foregroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(fontSize: 20),
+      ),
+    );
+  }
+}
+
+//-----------Green & Orange Button for saving data
+class CancelButton extends StatelessWidget {
+  final VoidCallback onPressed;
+  final String text;
+  const CancelButton({super.key, required this.onPressed, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    final isDarkMode = themeNotifier.value;
+    return TextButton(
+      onPressed: onPressed,
+      style: TextButton.styleFrom(
+        padding: const EdgeInsets.symmetric(
+            horizontal: 40, vertical: 8),
+        foregroundColor: isDarkMode ? Colors.white : Colors.black,
+        shape: RoundedRectangleBorder(
+            borderRadius:
+                BorderRadius.circular(10),
+            side: BorderSide(
+                color: isDarkMode ? Colors.white : Colors.black,
+                width: 1.5)),
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(fontSize: 20),
+      ),
+    );
+  }
+}

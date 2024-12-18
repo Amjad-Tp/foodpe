@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:foodpe/functions/nr_functions.dart';
-import 'package:foodpe/functions/snackbar.dart';
 import 'package:foodpe/main.dart';
 import 'package:foodpe/screens/code_Extraction/custom_textfield.dart';
+import 'package:foodpe/screens/code_Extraction/whole_custom_t_field.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddScreen extends StatefulWidget {
@@ -114,85 +114,7 @@ class _AddScreenState extends State<AddScreen> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      CustomTextfield(
-                        controller: _nameController,
-                        hintText: 'Recipe Title',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Give the good title';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-      
-                      //----------CookTime
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Text(
-                            'Cook time(average time)',
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          const SizedBox(
-                            width: 40,
-                          ),
-                          Expanded(
-                            child: CustomTextfield(
-                              controller: _cookTimeController,
-                              hintText: '2hr 30min',
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Give the Cook Time';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-      
-                      //-------Category
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Text(
-                            'Category',
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          const SizedBox(
-                            width: 40,
-                          ),
-                          Expanded(
-                            child: CustomTextfield(
-                              controller: _categoryController,
-                              hintText: 'eg: Breakfast, Lunch, Snacks Dinner',
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Fill this category field';
-                                } else if (
-                                    value.trim() != 'Breakfast' &&
-                                    value.trim() != 'Lunch' &&
-                                    value.trim() != 'Snacks' &&
-                                    value.trim() != 'Dinner') {
-                                  showMessage(context,
-                                      'You only have 4 categories, Breakfast, Lunch, Snacks and Dinner. please enter this correctly.',Colors.white,Colors.black);
-                                  return 'Please Enter correctly';
-                                }
-                                return null;
-                              },
-                            ),
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
+                      WholeCustomTextField(name: _nameController, cookTime: _cookTimeController, category: _categoryController),
       
                       //Ingredients
                       const Align(
@@ -228,17 +150,11 @@ class _AddScreenState extends State<AddScreen> {
                                 .add(TextEditingController());
                           });
                         },
-                        label: const Text(
-                          'Ingredient',
-                          style: TextStyle(fontSize: 18),
-                        ),
+                        label: const Text('Ingredient',style: TextStyle(fontSize: 18),),
                         icon: const Icon(Icons.add_rounded),
-                        style:
-                            TextButton.styleFrom(foregroundColor: isDarkMode ? Colors.white : Colors.black),
+                        style: TextButton.styleFrom(foregroundColor: isDarkMode ? Colors.white : Colors.black),
                       ),
-                      const SizedBox(
-                        height: 15,
-                      ),
+                      const SizedBox(height: 15,),
       
                       //Cooking Process
                       MultilineTextfield(
@@ -363,20 +279,18 @@ class _AddScreenState extends State<AddScreen> {
                       ),
       
                       //Publish Button--------
-                      TextButton(
+                      SavingGreenOrange(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             callingTheAddingFunc();
                             _nameController.clear();
                             _cookTimeController.clear();
                             _categoryController.clear();
-                            
                             for (var 
                             controller in _ingredientsControllers) {
                               controller.clear();
                             }
                             _ingredientsControllers.removeRange(2, _ingredientsControllers.length);
-                            
                             _preparationController.clear();
                             _caloriesController.clear();
                             _proteinController.clear();
@@ -385,19 +299,7 @@ class _AddScreenState extends State<AddScreen> {
                             addFoodImagePath = null;
                           }
                         },
-                        style: TextButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 50, vertical: 8),
-                          backgroundColor: isDarkMode ? const Color(0xFF8ec43f) : const Color(0xFFE08C43),
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: const Text(
-                          'Publish',
-                          style: TextStyle(fontSize: 20),
-                        ),
+                        text: "Publish"
                       ),
       
                       const SizedBox(

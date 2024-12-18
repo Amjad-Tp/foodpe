@@ -2,8 +2,11 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:foodpe/functions/db_functions.dart';
+import 'package:foodpe/functions/nr_functions.dart';
+import 'package:foodpe/functions/snackbar.dart';
 import 'package:foodpe/main.dart';
 import 'package:foodpe/model/user_model.dart';
+import 'package:foodpe/screens/code_Extraction/custom_textfield.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -78,7 +81,7 @@ class _UserEditScreenState extends State<UserEditScreen> {
                         const SizedBox(
                           height: 25,
                         ),
-
+                        //----------Image Picker
                         if(!kIsWeb)
                         GestureDetector(
                           child: CircleAvatar(
@@ -98,8 +101,7 @@ class _UserEditScreenState extends State<UserEditScreen> {
                                 : null,
                           ),
                           onTap: () async {
-                            final XFile? pickedFile = await _picker.pickImage(
-                                source: ImageSource.gallery);
+                            final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
                             if (pickedFile != null) {
                               setState(() {
                                 _selectedImagePath = pickedFile.path;
@@ -108,9 +110,8 @@ class _UserEditScreenState extends State<UserEditScreen> {
                           },
                         ),
                         
-                        const SizedBox(
-                          height: 20,
-                        ),
+                        const SizedBox(height: 20,),
+                        //--------Forms----------
                         Form(
                           key: _formKey,
                           child: Center(
@@ -128,29 +129,15 @@ class _UserEditScreenState extends State<UserEditScreen> {
                                       controller: _emailController,
                                       keyboardType: TextInputType.emailAddress,
                                       decoration: const InputDecoration(hintText: 'Email'),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please Enter your email';
-                                        } else if (!RegExp(
-                                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                            .hasMatch(value)) {
-                                          return 'Enter a valid Email';
-                                        }
-                                        return null;
-                                      },
+                                      validator: (value) => validateField(value: value, fieldName: 'Email', email: value)
                                     ),
                                     const SizedBox(height: 15),
                                     TextFormField(
                                       controller: _nameController,
                                       keyboardType: TextInputType.name,
                                       textCapitalization: TextCapitalization.words,
-                                      decoration: const InputDecoration(hintText: 'Name'),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty || value.trim().isEmpty) {
-                                          return 'Please Enter your Name';
-                                        }
-                                        return null;
-                                      },
+                                      decoration: const InputDecoration(hintText: 'User Name'),
+                                      validator: (value) => validateField(value: value, fieldName: 'User Name')
                                     ),
                                     const SizedBox(height: 15),
                                     TextFormField(
@@ -158,14 +145,7 @@ class _UserEditScreenState extends State<UserEditScreen> {
                                       keyboardType: TextInputType.number,
                                       maxLength: 10,
                                       decoration: const InputDecoration(hintText: 'Phone Number'),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please Enter your Phone Number';
-                                        } else if (value.length != 10) {
-                                          return 'Enter a valid Number';
-                                        }
-                                        return null;
-                                      },
+                                      validator: (value) => validateField(value: value, fieldName: "Phone Number", allowedValues: value),
                                     ),
                                     const SizedBox(height: 15),
                                     TextFormField(
@@ -181,38 +161,18 @@ class _UserEditScreenState extends State<UserEditScreen> {
                                       keyboardType: TextInputType.number,
                                       obscureText: true,
                                       decoration: const InputDecoration(hintText: 'Confirm PIN'),
-                                      validator: (value) {
-                                        if (_pinController.text != value) {
-                                          return "PIN doesn't match";
-                                        }
-                                        return null;
-                                      },
+                                      validator: (value) => _pinController.text != value ? "PIN doesn't match" : null
                                     ),
-
-
+                                    //------------Buttons--------
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         //Cancel Button--------
-                                        TextButton(
+                                        CancelButton(
                                           onPressed: () {
                                             Navigator.pop(context);
                                           },
-                                          style: TextButton.styleFrom(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 40, vertical: 8),
-                                            foregroundColor: isDarkMode ? Colors.white : Colors.black,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                side: BorderSide(
-                                                    color: isDarkMode ? Colors.white : Colors.black,
-                                                    width: 1.5)),
-                                          ),
-                                          child: const Text(
-                                            'Cancel',
-                                            style: TextStyle(fontSize: 20),
-                                          ),
+                                          text: "Cancel"
                                         ),
 
                                         const SizedBox(
@@ -220,28 +180,14 @@ class _UserEditScreenState extends State<UserEditScreen> {
                                         ),
 
                                         //---------change Button
-                                        TextButton(
+                                        SavingGreenOrange(
                                           onPressed: () {
-                                            if (_formKey.currentState!
-                                                .validate()) {
+                                            if (_formKey.currentState!.validate()) {
                                               editingUser(context);
                                             }
                                           },
-                                          style: TextButton.styleFrom(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 40, vertical: 8),
-                                            backgroundColor: isDarkMode ? const Color(0xFF8ec43f) : const Color(0xFFE27619),
-                                            foregroundColor: Colors.white,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                          ),
-                                          child: const Text(
-                                            'Change',
-                                            style: TextStyle(fontSize: 20),
-                                          ),
-                                        ),
+                                          text: "Change"
+                                        )
                                       ],
                                     ),
                                   ],
@@ -286,31 +232,12 @@ class _UserEditScreenState extends State<UserEditScreen> {
       } else {
         settingsBox.put('isSetApplock', false);
       }
-
       await resetPin(editedUser);
-
+      showMessage(context, 'User Updated', Colors.white);
       await Future.delayed(const Duration(seconds: 1));
-
       Navigator.of(context).pop();
     }
   }
-
-  //--------------------Snack Bar-----------------
-  void messageSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        margin: const EdgeInsets.all(16),
-        // backgroundColor: Colors.white,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        duration: const Duration(seconds: 2),
-      ),
-    );
-  }
-
   @override
   void dispose() {
     super.dispose();

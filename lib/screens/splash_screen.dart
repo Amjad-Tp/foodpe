@@ -4,7 +4,7 @@ import 'package:foodpe/functions/db_functions.dart';
 import 'package:foodpe/screens/applock/applock_screen.dart';
 import 'package:foodpe/screens/applock/set_applock_screen.dart';
 import 'package:foodpe/screens/bottomNavigation.dart';
-import 'package:foodpe/screens/introduction_one.dart';
+import 'package:foodpe/screens/splash_handling.dart';
 import 'package:hive_flutter/adapters.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -84,7 +84,7 @@ class _SplashScreenState extends State<SplashScreen> {
       } else {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (ctx) => const IntroductionOne(),
+            builder: (ctx) =>  SplashHandling(),
           ),
         );
       }
