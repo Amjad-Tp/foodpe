@@ -53,29 +53,28 @@ class _EditFoodScreenState extends State<EditFoodScreen> {
     }
   }
   Future<void> _publishFood(int index) async {
+    final updatedFood = Food(
+      foodImagePath: _selectedImagePath ?? widget.foodRecipe.foodImagePath,
+      title: _nameController.text,
+      cookTime: _cookTimeController.text,
+      category: _categoryController.text.trim(),
+      ingredients: _ingredientsControllers.map((e) => e.text).toList(),
+      preparation: _preparationController.text,
+      calories: _caloriesController.text,
+      protein: _proteinController.text,
+      carbohydrates: _carbohydratesController.text,
+      fats: _fatsController.text,
+    );
 
-  final updatedFood = Food(
-    foodImagePath: _selectedImagePath ?? widget.foodRecipe.foodImagePath,
-    title: _nameController.text,
-    cookTime: _cookTimeController.text,
-    category: _categoryController.text.trim(),
-    ingredients: _ingredientsControllers.map((e) => e.text).toList(),
-    preparation: _preparationController.text,
-    calories: _caloriesController.text,
-    protein: _proteinController.text,
-    carbohydrates: _carbohydratesController.text,
-    fats: _fatsController.text,
-  );
+    await editFoodRecipe(index, updatedFood);
 
-  await editFoodRecipe(index, updatedFood);
-
-  showMessage(context, 'Updated Successfully',Colors.white,Colors.black);
-  
-  await Future.delayed(const Duration(seconds: 2));
-  
-  Navigator.pop(context, updatedFood);
-  
-}
+    showMessage(context, 'Updated Successfully',Colors.white,Colors.black);
+    
+    await Future.delayed(const Duration(seconds: 2));
+    
+    Navigator.pop(context, updatedFood);
+    
+  }
 
   @override
   void dispose() {
@@ -431,7 +430,7 @@ class _EditFoodScreenState extends State<EditFoodScreen> {
                             style: TextButton.styleFrom(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 40, vertical: 8),
-                              backgroundColor: isDarkMode ? const Color(0xFF033842) : const Color(0xFFE08C43),
+                              backgroundColor: isDarkMode ? const Color(0xFF8ec43f) : const Color(0xFFE08C43),
                               foregroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),

@@ -2,10 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:foodpe/functions/db_functions.dart';
+import 'package:foodpe/functions/nr_functions.dart';
 import 'package:foodpe/functions/snackbar.dart';
 import 'package:foodpe/main.dart';
-import 'package:foodpe/model/food_model.dart';
 import 'package:foodpe/screens/code_Extraction/custom_textfield.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -19,19 +18,16 @@ class AddScreen extends StatefulWidget {
 class _AddScreenState extends State<AddScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  // final ImagePicker _picker = ImagePicker();
   String? addFoodImagePath;
 
   final _nameController = TextEditingController();
   final _cookTimeController = TextEditingController();
   final _categoryController = TextEditingController();
   final _preparationController = TextEditingController();
-
   final _caloriesController = TextEditingController();
   final _proteinController = TextEditingController();
   final _carbohydratesController = TextEditingController();
   final _fatsController = TextEditingController();
-
   final List<TextEditingController> _ingredientsControllers = [
     TextEditingController(),
     TextEditingController(),
@@ -58,6 +54,19 @@ class _AddScreenState extends State<AddScreen> {
     }
   }
 
+  void callingTheAddingFunc() {
+    final name = _nameController.text;
+    final cookTime = _cookTimeController.text;
+    final category = _categoryController.text.trim();
+    final preperation = _preparationController.text;
+    final calories = _caloriesController.text;
+    final carbohydrates = _carbohydratesController.text;
+    final protein = _proteinController.text;
+    final fats = _fatsController.text;
+    final ingredients = _ingredientsControllers.map((controller) => controller.text.trim()).where((ingredient) => ingredient.isNotEmpty).toList();
+
+    publishingFood(name,cookTime,category,preperation,calories,carbohydrates,protein,fats,ingredients,context,addFoodImagePath);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,18 +105,11 @@ class _AddScreenState extends State<AddScreen> {
                         : null,
                   ),
                   child: addFoodImagePath == null
-                      ? const Icon(
-                          Icons.image_outlined,
-                          color: Colors.grey,
-                          size: 60,
-                        )
+                      ? const Icon(Icons.image_outlined,color: Colors.grey,size: 60,)
                       : null,
-
                 ),
               ),
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20,),
               Form(
                   key: _formKey,
                   child: Column(
@@ -364,13 +366,29 @@ class _AddScreenState extends State<AddScreen> {
                       TextButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            publishingFood();
+                            callingTheAddingFunc();
+                            _nameController.clear();
+                            _cookTimeController.clear();
+                            _categoryController.clear();
+                            
+                            for (var 
+                            controller in _ingredientsControllers) {
+                              controller.clear();
+                            }
+                            _ingredientsControllers.removeRange(2, _ingredientsControllers.length);
+                            
+                            _preparationController.clear();
+                            _caloriesController.clear();
+                            _proteinController.clear();
+                            _carbohydratesController.clear();
+                            _fatsController.clear();
+                            addFoodImagePath = null;
                           }
                         },
                         style: TextButton.styleFrom(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 50, vertical: 8),
-                          backgroundColor: isDarkMode ? const Color(0xFF033842) : const Color(0xFFE08C43),
+                          backgroundColor: isDarkMode ? const Color(0xFF8ec43f) : const Color(0xFFE08C43),
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -393,68 +411,8 @@ class _AddScreenState extends State<AddScreen> {
       ),
     );
   }
+  
 
-  Future<void> publishingFood() async {
-    final name = _nameController.text;
-    final cookTime = _cookTimeController.text;
-    final category = _categoryController.text.trim();
-    final preperation = _preparationController.text;
-    final calories = _caloriesController.text;
-    final carbohydrates = _carbohydratesController.text;
-    final protein = _proteinController.text;
-    final fats = _fatsController.text;
-
-    final ingredients = _ingredientsControllers
-        .map((controller) => controller.text.trim())
-        .where((ingredient) => ingredient.isNotEmpty)
-        .toList();
-
-    if (name.isEmpty ||
-        cookTime.isEmpty ||
-        category.isEmpty ||
-        ingredients.isEmpty ||
-        preperation.isEmpty ||
-        calories.isEmpty ||
-        protein.isEmpty ||
-        carbohydrates.isEmpty ||
-        fats.isEmpty) {
-      return showMessage(context, 'You missed fill out any item',Colors.white);
-    }
-
-    final foodRecipeItem = Food(
-        foodImagePath: addFoodImagePath,
-        title: name,
-        cookTime: cookTime,
-        category: category,
-        ingredients: ingredients,
-        preparation: preperation,
-        calories: calories,
-        protein: protein,
-        carbohydrates: carbohydrates,
-        fats: fats,
-        );
-
-    addFoodRecipe(foodRecipeItem);
-
-    showMessage(context, 'Your Food Recipe added succefully',Colors.white,Colors.black);
-
-    _nameController.clear();
-    _cookTimeController.clear();
-    _categoryController.clear();
-    
-    for (var 
-    controller in _ingredientsControllers) {
-      controller.clear();
-    }
-    _ingredientsControllers.removeRange(2, _ingredientsControllers.length);
-    
-    _preparationController.clear();
-    _caloriesController.clear();
-    _proteinController.clear();
-    _carbohydratesController.clear();
-    _fatsController.clear();
-    addFoodImagePath = null;
-  }
   @override
   void dispose() {
     super.dispose();

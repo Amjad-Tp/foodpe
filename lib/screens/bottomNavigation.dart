@@ -50,7 +50,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
               });
             },
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            selectedItemColor: isDarkMode ? const Color(0xFF077B92) : const Color(0xFFE27619),
+            selectedItemColor: isDarkMode ? const Color(0xFF8ec43f) : const Color(0xFFE27619),
             unselectedItemColor: Colors.grey,
             iconSize: 27,
             showUnselectedLabels: false,

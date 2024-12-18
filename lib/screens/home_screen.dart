@@ -18,13 +18,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _openDrawerKey = GlobalKey<ScaffoldState>();
-  final List<String> filters = [
-    "All",
-    "Breakfast",
-    "Lunch",
-    "Snacks",
-    "Dinner"
-  ];
+  final List<String> filters = ["All","Breakfast","Lunch","Snacks","Dinner"];
   final _searchController = TextEditingController();
   String selectedItem = "All";
 
@@ -152,14 +146,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 13),
                           backgroundColor: isSelected
                               ? isDarkMode
-                                  ? const Color(0xFF077B92)
+                                  ? const Color(0xFF8ec43f)
                                   : const Color(0xFFE27619)
                               : Colors.transparent,
                           side: BorderSide(
                               color: isSelected
-                                  ? isDarkMode
-                                      ? const Color(0xFF077B92)
-                                      : const Color(0xFFE27619)
+                                  ? Colors.transparent
                                   : isDarkMode
                                       ? Colors.white
                                       : const Color(0xFFE78D3E)),
@@ -175,9 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: TextStyle(
                             color: isSelected
                                 ? Colors.white
-                                : isDarkMode
-                                    ? Colors.white
-                                    : Colors.black,
+                                : isDarkMode ? Colors.white : Colors.black,
                           ),
                         ),
                       ),

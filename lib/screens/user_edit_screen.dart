@@ -230,7 +230,7 @@ class _UserEditScreenState extends State<UserEditScreen> {
                                           style: TextButton.styleFrom(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 40, vertical: 8),
-                                            backgroundColor: isDarkMode ? const Color(0xFF077B92) : const Color(0xFFE27619),
+                                            backgroundColor: isDarkMode ? const Color(0xFF8ec43f) : const Color(0xFFE27619),
                                             foregroundColor: Colors.white,
                                             shape: RoundedRectangleBorder(
                                               borderRadius:

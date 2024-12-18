@@ -9,9 +9,6 @@ class CodedItemScreen extends StatefulWidget {
   @override
   State<CodedItemScreen> createState() => _CodedItemScreenState();
 }
-
-bool isCollected = false;
-
 class _CodedItemScreenState extends State<CodedItemScreen> {
   @override
   Widget build(BuildContext context) {
@@ -145,73 +142,6 @@ class _CodedItemScreenState extends State<CodedItemScreen> {
             icon: const Icon(Icons.arrow_back_rounded,color: Colors.white,size: 30,)
           )
         ),
-        // Positioned(
-        //   top: 40,
-        //   right: 10,
-        //   child: Row(
-        //     children: [
-        //       //----------Add to Food Plan
-        //       IconButton(
-        //         onPressed: () async {
-        //         //   final foodDB = Hive.box<Food>('foodBox');
-        //         //   final currentPlan = foodDB.values.where((food) => food.isAddedtoPlan).toList();
-
-        //         //   if (!widget.foodRecipe.isAddedtoPlan && currentPlan.length >= 4) {
-        //         //     showMessage(context, 'You are reached your limit', Colors.white, Colors.black);
-        //         //     return;
-        //         //   }
-
-        //         //   setState(() {
-        //         //     widget.foodRecipe.isAddedtoPlan = !widget.foodRecipe.isAddedtoPlan;
-
-        //         //     if(widget.foodRecipe.isAddedtoPlan){
-        //         //       widget.foodRecipe.addedtoList = DateTime.now();
-        //         //     }else{
-        //         //       widget.foodRecipe.addedtoList = null;
-        //         //     }
-        //         //   });
-
-        //         //   await foodDB.put(widget.foodRecipe.id, widget.foodRecipe);
-        //         //   foodListNotifier.value = foodDB.values.toList().cast<Food>();
-        //         },
-        //         icon: Icon(
-        //           // widget.foodRecipe.isAddedtoPlan
-        //           //     ? Icons.add_circle_rounded
-        //           //     : Icons.add_circle_outline_rounded,
-        //           size: 35,
-        //           color: Colors.white,
-        //         ),
-        //       ),
-
-        //       //----------Add to Collection
-        //       IconButton(
-        //         onPressed: () async {
-        //           setState(() {
-        //             widget.foodRecipe.isCollected = !widget.foodRecipe.isCollected;
-
-        //             if (widget.foodRecipe.isCollected) {
-        //               widget.foodRecipe.addedtoList = DateTime.now();
-        //             } else {
-        //               widget.foodRecipe.addedtoList = null;
-        //             }
-
-        //           });
-
-        //           final foodDB = Hive.box<Food>('foodBox');
-        //           await foodDB.put(widget.foodRecipe.id, widget.foodRecipe);
-        //           foodListNotifier.value = foodDB.values.toList().cast<Food>();
-        //         },
-        //         icon: Icon(
-        //           widget.foodRecipe.isCollected
-        //               ? Icons.bookmark_rounded
-        //               : Icons.bookmark_outline_rounded,
-        //           size: 35,
-        //           color: Colors.white,
-        //         ),
-        //       ),
-        //     ],
-        //   )
-        // ),
       ],
     );
   }
