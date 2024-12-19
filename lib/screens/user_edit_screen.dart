@@ -147,7 +147,9 @@ class _UserEditScreenState extends State<UserEditScreen> {
                                       decoration: const InputDecoration(hintText: 'Phone Number'),
                                       validator: (value) => validateField(value: value, fieldName: "Phone Number", allowedValues: value),
                                     ),
-                                    const SizedBox(height: 15),
+                                    
+                                    const Align(alignment: Alignment.centerLeft, child: Text('Set a Pin (Optional)',style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500),)),
+                                    const SizedBox(height: 5),
                                     TextFormField(
                                       controller: _pinController,
                                       maxLength: 4,

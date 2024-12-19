@@ -41,10 +41,11 @@ class _ApplockScreenState extends State<ApplockScreen> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 232, 232, 232),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        // mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const Spacer(),
           const Text('Welcome',style: TextStyle(color: Colors.black,fontSize: 50,fontWeight: FontWeight.w500),),
-          const SizedBox(height: 30,),
+          const SizedBox(height: 40,),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(4, (index) {
@@ -67,55 +68,53 @@ class _ApplockScreenState extends State<ApplockScreen> {
             }),
           ),
     
-          const SizedBox(height: 45,),
+          const SizedBox(height: 80,),
     
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 80.0),
-            child: GridView.builder(
-              shrinkWrap: true,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10
-              ),
-              itemCount: 12,
-              itemBuilder: (context, index) {
-            
-                if(index == 11){
-                  return ElevatedButton(
-                    onPressed: () {
-                      pinValidation(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: const CircleBorder(),
-                      foregroundColor: Colors.grey
-                    ),
-                    child: const Text('OK',style: TextStyle(fontSize: 23,color: Colors.black),)
-                  );
-                }
-    
-                if(index == 10){
-                  return ElevatedButton(
-                    onPressed: _onBackspaceClicked,
-                    style: ElevatedButton.styleFrom(
-                      shape: const CircleBorder()
-                    ),
-                    child: const Icon(Icons.backspace_rounded,color: Colors.black)
-                  );
-                }
-            
-                String number = (index < 9) ? (index + 1).toString() : '0';
-                return ElevatedButton(
-                  onPressed: () => onNumberClicked(number),
-                  style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        padding: EdgeInsets.zero,
-                        foregroundColor: Colors.grey,
-                      ),
-                  child: Text(number,style: const TextStyle(fontSize: 25,color: Colors.black),)
-                );
-              },
+          GridView.builder(
+            shrinkWrap: true,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              mainAxisExtent: 80
             ),
+            itemCount: 12,
+            itemBuilder: (context, index) {
+          
+              if(index == 11){
+                return InkWell(
+                  onTap: () {
+                    pinValidation(context);
+                  },
+                  child: Container(
+                    color: Colors.grey[300],
+                    alignment: Alignment.center,
+                    child: const Text('OK',style: TextStyle(fontSize: 23,color: Colors.black),)
+                  ),
+                );
+              }
+              
+              if(index == 10){
+                return InkWell(
+                  onTap: _onBackspaceClicked,
+                  child: Container(
+                    color: Colors.grey[300],
+                    alignment: Alignment.center,
+                    child: const Icon(Icons.backspace_rounded,color: Colors.black)
+                  ),
+                );
+              }
+          
+              String number = (index < 9) ? (index + 1).toString() : '0';
+              return InkWell(
+                  onTap: () => onNumberClicked(number),
+                  splashColor: Colors.black54,
+                  highlightColor: Colors.black12,
+                  child: Container(
+                    color: Colors.grey[300],
+                    alignment: Alignment.center,
+                    child: Text(number,style: const TextStyle(fontSize: 25,color: Colors.black),)
+                  ),
+                );
+            },
           )
         ],
       ),
