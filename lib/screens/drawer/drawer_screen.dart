@@ -89,8 +89,8 @@ class DrawerWidget extends StatelessWidget {
         
             //----------Meal Planner
             _buildDrawerItem(
-              icon: Icons.food_bank_outlined,
-              text: 'Settings',
+              icon: Icons.fastfood_rounded,
+              text: 'Meal Planner',
               onTap: (){
                 Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => const MealPlannerScreen()));
               }

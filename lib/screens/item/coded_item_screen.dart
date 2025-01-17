@@ -150,7 +150,7 @@ class _CodedItemScreenState extends State<CodedItemScreen> {
             onPressed: () {
               openAlert(context, widget.food);
             },
-            icon: const Icon(Icons.food_bank_rounded,color: Colors.white,size: 30,)
+            icon: const Icon(Icons.fastfood_rounded,color: Colors.white,size: 30,)
           )
         ),
       ],

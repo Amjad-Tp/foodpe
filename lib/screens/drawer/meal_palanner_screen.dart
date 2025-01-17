@@ -68,11 +68,11 @@ class MealPlannerScreen extends StatelessWidget {
                                 subtitle: meal != null
                                     ? Text(meal.name, style: const TextStyle(fontWeight: FontWeight.w600,fontSize: 18),)
                                     : const Text('No element added',style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18),),
-                                leading: const Icon(Icons.fastfood),
+                                leading: const Icon(Icons.fastfood_rounded),
                                 trailing: meal != null
                                     ? IconButton(
                                         icon: const Icon(Icons.delete_outline_rounded),
-                                        onPressed: () => _deleteMeal(context, mealBox, meal),
+                                        onPressed: () => deleteMeal(context, mealBox, meal),
                                       )
                                     : null,
                               ),
@@ -91,7 +91,7 @@ class MealPlannerScreen extends StatelessWidget {
     );
   }
 
-  void _deleteMeal(BuildContext context, Box<MealPlannerModel> mealBox, MealPlannerModel meal) {
+  void deleteMeal(BuildContext context, Box<MealPlannerModel> mealBox, MealPlannerModel meal) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
