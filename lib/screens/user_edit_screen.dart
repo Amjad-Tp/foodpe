@@ -219,7 +219,7 @@ class _UserEditScreenState extends State<UserEditScreen> {
           email: _emailController.text,
           pin: _pinController.text,
           phoneNumber: _phoneNumberController.text,
-          imagePath: _selectedImagePath
+          imagePath: _selectedImagePath ?? widget.user.imagePath
       );
 
       final settingsBox = Hive.box('settingsBox');

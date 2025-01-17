@@ -296,7 +296,9 @@ class _AddScreenState extends State<AddScreen> {
                             _proteinController.clear();
                             _carbohydratesController.clear();
                             _fatsController.clear();
-                            addFoodImagePath = null;
+                            setState(() {
+                              addFoodImagePath = null;
+                            });
                           }
                         },
                         text: "Publish"
