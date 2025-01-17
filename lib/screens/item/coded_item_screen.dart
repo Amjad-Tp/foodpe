@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttericon/linecons_icons.dart';
+import 'package:foodpe/functions/snackbar.dart';
 
 
 class CodedItemScreen extends StatefulWidget {
@@ -147,7 +148,7 @@ class _CodedItemScreenState extends State<CodedItemScreen> {
           right: 15,
           child: IconButton(
             onPressed: () {
-              
+              openAlert(context, widget.food);
             },
             icon: const Icon(Icons.food_bank_rounded,color: Colors.white,size: 30,)
           )

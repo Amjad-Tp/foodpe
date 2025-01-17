@@ -5,6 +5,7 @@ import 'package:fluttericon/linecons_icons.dart';
 import 'package:foodpe/functions/db_functions.dart';
 import 'package:foodpe/model/user_model.dart';
 import 'package:foodpe/screens/drawer/food_quotes.dart';
+import 'package:foodpe/screens/drawer/meal_palanner_screen.dart';
 import 'package:foodpe/screens/drawer/privacy_policy.dart';
 import 'package:foodpe/screens/drawer/settings.dart';
 import 'package:foodpe/screens/drawer/your_special.dart';
@@ -86,6 +87,15 @@ class DrawerWidget extends StatelessWidget {
               }
             ),
         
+            //----------Meal Planner
+            _buildDrawerItem(
+              icon: Icons.food_bank_outlined,
+              text: 'Settings',
+              onTap: (){
+                Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => const MealPlannerScreen()));
+              }
+            ),
+            
             //----------Settings
             _buildDrawerItem(
               icon: Icons.settings_outlined,

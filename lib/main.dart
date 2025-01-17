@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foodpe/model/food_model.dart';
+import 'package:foodpe/model/meal_planner_model.dart';
 import 'package:foodpe/model/user_model.dart';
 import 'package:foodpe/screens/splash_screen.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -13,10 +14,12 @@ void main() async {
 
   Hive.registerAdapter(UserAdapter());
   Hive.registerAdapter(FoodAdapter());
+  Hive.registerAdapter(MealPlannerModelAdapter());
 
   await Hive.openBox<User>('userBox');
   await Hive.openBox('settingsBox');
   await Hive.openBox<Food>('foodBox');
+  await Hive.openBox<MealPlannerModel>('mealBox');
 
   final settingsBox = Hive.box('settingsBox');
   themeNotifier.value = settingsBox.get('isDarkMode',defaultValue: false);

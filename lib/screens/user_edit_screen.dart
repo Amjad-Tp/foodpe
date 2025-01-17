@@ -236,7 +236,6 @@ class _UserEditScreenState extends State<UserEditScreen> {
       }
       await resetPin(editedUser);
       showMessage(context, 'User Updated');
-      await Future.delayed(const Duration(seconds: 1));
       Navigator.of(context).pop();
     }
   }
