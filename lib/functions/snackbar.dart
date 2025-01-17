@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
 
-void showMessage(BuildContext context, String message,Color backgroundColor, [Color? foregroundColor]) {
+void showMessage(BuildContext context, String message) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(
         message,
-        style: TextStyle(color: foregroundColor ?? Colors.black),
       ),
-      margin: const EdgeInsets.all(16),
-      backgroundColor: backgroundColor,
-      behavior: SnackBarBehavior.floating,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 1),
     ),
   );
 }
+

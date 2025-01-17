@@ -142,6 +142,16 @@ class _CodedItemScreenState extends State<CodedItemScreen> {
             icon: const Icon(Icons.arrow_back_rounded,color: Colors.white,size: 30,)
           )
         ),
+        Positioned(
+          top: 40,
+          right: 15,
+          child: IconButton(
+            onPressed: () {
+              
+            },
+            icon: const Icon(Icons.food_bank_rounded,color: Colors.white,size: 30,)
+          )
+        ),
       ],
     );
   }

@@ -26,7 +26,7 @@ Future<void> publishingFood(
       protein.isEmpty ||
       carbohydrates.isEmpty ||
       fats.isEmpty) {
-    return showMessage(context, 'You missed fill out any item', Colors.white);
+    return showMessage(context, 'You missed fill out any item');
   }
 
   final foodRecipeItem = Food(
@@ -45,7 +45,7 @@ Future<void> publishingFood(
   addFoodRecipe(foodRecipeItem);
 
   showMessage(
-      context, 'Your Food Recipe added succefully', Colors.white, Colors.black);
+      context, 'Your Food Recipe added succefully');
 }
 
 

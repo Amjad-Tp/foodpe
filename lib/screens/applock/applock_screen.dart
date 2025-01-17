@@ -130,7 +130,7 @@ class _ApplockScreenState extends State<ApplockScreen> {
     if(createdPin != null && enteredPin == createdPin){
       Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (ctx) => BottomNavigation()), (Route<dynamic> route) => false);
     }else{
-      showMessage(context, 'Incorrect PIN',Colors.black,Colors.white);
+      showMessage(context, 'Incorrect PIN');
     }
   }
 }

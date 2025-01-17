@@ -63,7 +63,7 @@ class _EditaddFormsState extends State<EditaddForms> {
       fats: fats.text,
     );
     await editFoodRecipe(index, updatedFood);
-    showMessage(context, 'Updated Successfully',Colors.white,Colors.black);
+    showMessage(context, 'Updated Successfully');
     Navigator.pop(context, updatedFood);
   }
   

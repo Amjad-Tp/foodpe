@@ -121,7 +121,7 @@ class _TermsConditionsState extends State<TermsConditions> {
                               await Future.delayed(const Duration(seconds: 1));
                               Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute( builder: (context) => const BottomNavigation()), (Route<dynamic> route) => false);
                             } else {
-                              showMessage(context,"I like your Smart, Don't try to be Over smart",Colors.white);
+                              showMessage(context,"I like your Smart, Don't try to be Over smart");
                             }
                           }, text: 'Enter',
                         )
@@ -160,6 +160,6 @@ class _TermsConditionsState extends State<TermsConditions> {
       settingsBox.put('isFirstTimeWeb', false);
     }
 
-    showMessage(context,'Welcome to Food Recipe Note App',Colors.white);
+    showMessage(context,'Welcome to Food Recipe Note App');
   }
 }
