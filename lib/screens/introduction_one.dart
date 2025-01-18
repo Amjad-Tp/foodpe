@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:foodpe/screens/applock/set_applock_screen.dart';
 import 'package:foodpe/screens/code_Extraction/text_button_usable.dart';
 
 class IntroductionOne extends StatelessWidget {
-  const IntroductionOne({super.key});
+  final PageController pageController;
+
+  const IntroductionOne({super.key, required this.pageController});
 
   @override
   Widget build(BuildContext context) {
@@ -11,12 +12,18 @@ class IntroductionOne extends StatelessWidget {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          //---------image
+          //---------Background Image
           Opacity(
             opacity: 0.6,
             child: Image.asset(
-                'assets/images/delicious-burger-with-fresh-ingredients.jpg'),
+              'assets/images/delicious-burger-with-fresh-ingredients.jpg',
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
+            ),
           ),
+
+          //---------Top Text
           const SafeArea(
             child: Padding(
               padding: EdgeInsets.only(top: 15.0),
@@ -25,12 +32,12 @@ class IntroductionOne extends StatelessWidget {
                 child: Text(
                   '20+ Premium Recipe',
                   style: TextStyle(color: Colors.white, fontSize: 15),
-                )
+                ),
               ),
             ),
           ),
-    
-          //----------container
+
+          //----------Bottom Container
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -45,39 +52,47 @@ class IntroductionOne extends StatelessWidget {
               ),
               child: const Padding(
                 padding: EdgeInsets.only(top: 35),
-                child:  Column(
+                child: Column(
                   children: [
-                
                     //----------Description
                     Text.rich(
                       TextSpan(
-                        text: 'Welcome to ',style: TextStyle(color: Colors.black,fontSize: 19,fontWeight: FontWeight.w300),
+                        text: 'Welcome to ',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 19,
+                            fontWeight: FontWeight.w300),
                         children: [
                           TextSpan(
-                            text: 'FoodPe ',style: TextStyle(fontWeight: FontWeight.w600)
-                          ),
+                              text: 'FoodPe ',
+                              style: TextStyle(fontWeight: FontWeight.w600)),
                           TextSpan(
-                            text: 'your go-to place for\neasy, delicious recipes! Explore Recipes,\nFind recipes by searching or browsing\nthrough popular categories. Let your\ningredients inspire you!'
-                          )
-                        ]
+                              text:
+                                  'your go-to place for\neasy, delicious recipes! Explore Recipes,\nFind recipes by searching or browsing\nthrough popular categories. Let your\ningredients inspire you!')
+                        ],
                       ),
                       textAlign: TextAlign.center,
                     ),
-
                   ],
                 ),
               ),
             ),
           ),
 
+          //----------Next Button
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
               padding: const EdgeInsets.only(bottom: 65.0),
               child: TextButtonUsable(
                 backgroundColor: const Color(0xFFE27619),
-                onPressed: () => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute( builder: (context) => const SetApplockScreen()), (Route<dynamic> route) => false),
-                text: 'Get Start'
+                onPressed: (){
+                  pageController.nextPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  );
+                },
+                text: 'Next'
               ),
             ),
           ),

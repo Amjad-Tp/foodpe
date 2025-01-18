@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:foodpe/functions/db_functions.dart';
-import 'package:foodpe/screens/applock/applock_screen.dart';
 import 'package:foodpe/screens/applock/set_applock_screen.dart';
 import 'package:foodpe/screens/bottomNavigation.dart';
 import 'package:foodpe/screens/splash_handling.dart';
@@ -63,23 +62,14 @@ class _SplashScreenState extends State<SplashScreen> {
         );
       }
     } else {
-      final isSetApplock = settingsBox.get('isSetApplock', defaultValue: false);
       final isUserLogged = settingsBox.get('isUserLogged', defaultValue: false);
 
       if (isUserLogged) {
-        if (isSetApplock) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (ctx) => const ApplockScreen(),
-            ),
-          );
-        } else {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (ctx) => const BottomNavigation(),
             ),
           );
-        }
       } else {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(

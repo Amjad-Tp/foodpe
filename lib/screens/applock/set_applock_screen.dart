@@ -24,8 +24,6 @@ class _SetApplockScreenState extends State<SetApplockScreen> {
   final _emailController = TextEditingController();
   final _nameController = TextEditingController();
   final _phoneNumberController = TextEditingController();
-  final _pinController = TextEditingController();
-  final _confirmController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -122,23 +120,8 @@ class _SetApplockScreenState extends State<SetApplockScreen> {
                                       validator: (value) => validateField(value: value, fieldName: "Phone Number", allowedValues: value),
                                     ),
 
-                                    const Align(alignment: Alignment.centerLeft, child: Text('Set a Pin (Optional)',style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500),)),
-                                    const SizedBox(height: 5),
-                                    TextFormField(
-                                      controller: _pinController,
-                                      maxLength: 4,
-                                      keyboardType: TextInputType.number,
-                                      obscureText: true,
-                                      decoration: const InputDecoration(hintText: 'PIN'),
-                                    ),
-                                    TextFormField(
-                                      controller: _confirmController,
-                                      maxLength: 4,
-                                      keyboardType: TextInputType.number,
-                                      obscureText: true,
-                                      decoration: const InputDecoration(hintText: 'Confirm PIN'),
-                                      validator: (value) => _pinController.text != value ? "PIN doesn't match" : null
-                                    ),
+                                    const SizedBox(height: 15),
+                                    
                                     // --------Next Button---------
                                     TextButtonUsable(
                                       backgroundColor: const Color(0xFFE27619),
@@ -174,7 +157,6 @@ class _SetApplockScreenState extends State<SetApplockScreen> {
       final newApplock = User(
         name: _nameController.text,
         email: email,
-        pin: _pinController.text,
         phoneNumber: _phoneNumberController.text,
         imagePath: imagePath
       );
@@ -187,7 +169,6 @@ class _SetApplockScreenState extends State<SetApplockScreen> {
     super.dispose();
     _nameController.dispose();
     _emailController.dispose();
-    _pinController.dispose();
     _phoneNumberController.dispose();
   }
 }

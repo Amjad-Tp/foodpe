@@ -7,7 +7,6 @@ import 'package:foodpe/functions/snackbar.dart';
 import 'package:foodpe/main.dart';
 import 'package:foodpe/model/user_model.dart';
 import 'package:foodpe/screens/code_Extraction/custom_textfield.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UserEditScreen extends StatefulWidget {
@@ -27,20 +26,13 @@ class _UserEditScreenState extends State<UserEditScreen> {
   late final TextEditingController _emailController;
   late final TextEditingController _phoneNumberController;
   late final TextEditingController _nameController;
-  late final TextEditingController _pinController;
-  late final TextEditingController _confirmController;
 
   @override
   void initState() {
     super.initState();
     _emailController = TextEditingController(text: widget.user.email);
     _nameController = TextEditingController(text: widget.user.name);
-    _phoneNumberController =
-        TextEditingController(text: widget.user.phoneNumber);
-    _confirmController = TextEditingController(text: widget.user.pin);
-    if(widget.user.pin != null){
-      _pinController = TextEditingController(text: widget.user.pin);
-    }
+    _phoneNumberController = TextEditingController(text: widget.user.phoneNumber);
   }
 
   @override
@@ -148,23 +140,8 @@ class _UserEditScreenState extends State<UserEditScreen> {
                                       validator: (value) => validateField(value: value, fieldName: "Phone Number", allowedValues: value),
                                     ),
                                     
-                                    const Align(alignment: Alignment.centerLeft, child: Text('Set a Pin (Optional)',style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500),)),
-                                    const SizedBox(height: 5),
-                                    TextFormField(
-                                      controller: _pinController,
-                                      maxLength: 4,
-                                      keyboardType: TextInputType.number,
-                                      obscureText: true,
-                                      decoration: const InputDecoration(hintText: 'PIN'),
-                                    ),
-                                    TextFormField(
-                                      controller: _confirmController,
-                                      maxLength: 4,
-                                      keyboardType: TextInputType.number,
-                                      obscureText: true,
-                                      decoration: const InputDecoration(hintText: 'Confirm PIN'),
-                                      validator: (value) => _pinController.text != value ? "PIN doesn't match" : null
-                                    ),
+                                    const SizedBox(height: 15),
+                                    
                                     //------------Buttons--------
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
@@ -217,23 +194,10 @@ class _UserEditScreenState extends State<UserEditScreen> {
       final editedUser = User(
           name: _nameController.text,
           email: _emailController.text,
-          pin: _pinController.text,
           phoneNumber: _phoneNumberController.text,
           imagePath: _selectedImagePath ?? widget.user.imagePath
       );
 
-      final settingsBox = Hive.box('settingsBox');
-      final oldPin = settingsBox.get('applock');
-
-      if (_pinController.text.isNotEmpty) {
-        if (_pinController.text != oldPin) {
-          final newPin = _pinController.text;
-          settingsBox.put('applock', newPin);
-        }
-        settingsBox.put('isSetApplock', true);
-      } else {
-        settingsBox.put('isSetApplock', false);
-      }
       await resetPin(editedUser);
       showMessage(context, 'User Updated');
       Navigator.of(context).pop();
@@ -244,7 +208,6 @@ class _UserEditScreenState extends State<UserEditScreen> {
     super.dispose();
     _nameController.dispose();
     _emailController.dispose();
-    _pinController.dispose();
     _phoneNumberController.dispose();
   }
 }
