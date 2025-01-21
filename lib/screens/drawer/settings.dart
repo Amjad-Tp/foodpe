@@ -12,9 +12,7 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   late bool isDarkMode;
-
-  bool isLoading = false;
-
+  
   @override
   void initState() {
     super.initState();
@@ -23,11 +21,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void toggleDarkMode(bool value) async {
-    setState(() {
-      isLoading = true;
-    });
-
-    await Future.delayed(const Duration(seconds: 1));
 
     setState(() {
       isDarkMode = value;
@@ -36,10 +29,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     final settingsBox = Hive.box('settingsBox');
     await settingsBox.put('isDarkMode', isDarkMode);
-
-    setState(() {
-      isLoading = false;
-    });
   }
 
 
@@ -47,53 +36,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      body: Stack(
+      body: Column(
         children: [
-          Column(
-            children: [
-              OurAppBarTheme(
-                title: 'Settings',
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              Expanded(
-                child: ListView(
-                  children: [
-                    ListTile(
-                      title: const Text(
-                        "Dark Theme",style: TextStyle(fontSize: 20),
-                      ),
-                      trailing: Switch(
-                        value: isDarkMode,
-                        onChanged: toggleDarkMode,
-                        activeColor: Colors.grey[300],
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
+          OurAppBarTheme(
+            title: 'Settings',
+            onTap: () {
+              Navigator.pop(context);
+            },
           ),
-
-          if(isLoading)
-            Container(
-              color: Colors.black.withOpacity(0.5),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 60,
-                      height: 60,
-                      child: CircularProgressIndicator(color: isDarkMode ? Colors.white : const Color(0xFFE27619),strokeWidth: 3,),
-                    ),
-                    const SizedBox(height: 10,),
-                    Text('Loading',style: TextStyle(fontSize: 15,color: isDarkMode ? Colors.white : const Color(0xFFE27619)),)
-                  ],
+          Expanded(
+            child: ListView(
+              children: [
+                ListTile(
+                  title: const Text(
+                    "Dark Theme",style: TextStyle(fontSize: 20),
+                  ),
+                  trailing: Switch(
+                    value: isDarkMode,
+                    onChanged: toggleDarkMode,
+                    activeColor: Colors.grey[300],
+                  ),
                 ),
-              ),
-            )
+              ],
+            ),
+          )
         ],
       ),
     ));
