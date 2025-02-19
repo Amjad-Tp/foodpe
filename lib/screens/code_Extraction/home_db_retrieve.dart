@@ -11,27 +11,25 @@ import 'package:foodpe/screens/item/food_details_db.dart';
 class HomeDbRetrieve extends StatelessWidget {
   final String selectedItem;
   final TextEditingController searchController;
-  const HomeDbRetrieve({super.key, required this.selectedItem, required this.searchController});
+  const HomeDbRetrieve(
+      {super.key, required this.selectedItem, required this.searchController});
 
   @override
   Widget build(BuildContext context) {
-
     double screenWidth = MediaQuery.of(context).size.width;
-    
-    return ValueListenableBuilder<List<Food>>(
-      valueListenable: foodListNotifier,
-      builder: (context, foodList, child) {
-        final filteredList = foodList
-            .where((food) =>
-                (selectedItem == "All" ||
-                    food.category == selectedItem) &&
-                food.title
-                    .toLowerCase()
-                    .contains(searchController.text.toLowerCase()))
-            .toList();
 
-        return Column(
-          children: [
+    return ValueListenableBuilder<List<Food>>(
+        valueListenable: foodListNotifier,
+        builder: (context, foodList, child) {
+          final filteredList = foodList
+              .where((food) =>
+                  (selectedItem == "All" || food.category == selectedItem) &&
+                  food.title
+                      .toLowerCase()
+                      .contains(searchController.text.toLowerCase()))
+              .toList();
+
+          return Column(children: [
             if (filteredList.isNotEmpty)
               const Padding(
                 padding: EdgeInsets.only(left: 7.0),
@@ -40,15 +38,14 @@ class HomeDbRetrieve extends StatelessWidget {
                   child: Text(
                     'My Recipe',
                     style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600,
-                        height: 1),
+                        fontSize: 24, fontWeight: FontWeight.w600, height: 1),
                   ),
                 ),
               ),
             const SizedBox(height: 7),
             screenWidth > 500
                 ? GridView.builder(
+                    padding: EdgeInsets.zero,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     gridDelegate:
@@ -65,8 +62,8 @@ class HomeDbRetrieve extends StatelessWidget {
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (ctx) => FoodDetailsDB(
-                                  foodRecipe: foodRecipe),
+                              builder: (ctx) =>
+                                  FoodDetailsDB(foodRecipe: foodRecipe),
                             ),
                           );
                         },
@@ -79,21 +76,18 @@ class HomeDbRetrieve extends StatelessWidget {
                             fit: StackFit.expand,
                             children: [
                               ClipRRect(
-                                borderRadius:
-                                    BorderRadius.circular(10),
+                                borderRadius: BorderRadius.circular(10),
                                 child: Opacity(
                                   opacity: 0.6,
-                                  child: foodRecipe.foodImagePath !=
-                                          null
+                                  child: foodRecipe.foodImagePath != null
                                       ? kIsWeb
                                           ? Image.memory(
-                                              base64Decode(foodRecipe
-                                                  .foodImagePath!),
+                                              base64Decode(
+                                                  foodRecipe.foodImagePath!),
                                               fit: BoxFit.cover,
                                             )
                                           : Image.file(
-                                              File(foodRecipe
-                                                  .foodImagePath!),
+                                              File(foodRecipe.foodImagePath!),
                                               fit: BoxFit.cover,
                                             )
                                       : const Icon(
@@ -104,22 +98,17 @@ class HomeDbRetrieve extends StatelessWidget {
                                 ),
                               ),
                               Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 10),
+                                padding: const EdgeInsets.only(left: 10),
                                 child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Text(
                                       foodRecipe.title,
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w600,
-                                        fontSize: screenWidth > 700
-                                            ? 30
-                                            : 20,
+                                        fontSize: screenWidth > 700 ? 30 : 20,
                                         height: 0.8,
                                       ),
                                     ),
@@ -128,9 +117,7 @@ class HomeDbRetrieve extends StatelessWidget {
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w400,
-                                        fontSize: screenWidth > 700
-                                            ? 21
-                                            : 15,
+                                        fontSize: screenWidth > 700 ? 21 : 15,
                                       ),
                                     ),
                                     const SizedBox(height: 10),
@@ -144,6 +131,7 @@ class HomeDbRetrieve extends StatelessWidget {
                     },
                   )
                 : ListView.builder(
+                    padding: EdgeInsets.zero,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: filteredList.length,
@@ -155,8 +143,8 @@ class HomeDbRetrieve extends StatelessWidget {
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (ctx) => FoodDetailsDB(
-                                    foodRecipe: foodRecipe),
+                                builder: (ctx) =>
+                                    FoodDetailsDB(foodRecipe: foodRecipe),
                               ),
                             );
                           },
@@ -171,21 +159,18 @@ class HomeDbRetrieve extends StatelessWidget {
                               fit: StackFit.expand,
                               children: [
                                 ClipRRect(
-                                  borderRadius:
-                                      BorderRadius.circular(10),
+                                  borderRadius: BorderRadius.circular(10),
                                   child: Opacity(
                                     opacity: 0.7,
-                                    child: foodRecipe.foodImagePath !=
-                                            null
+                                    child: foodRecipe.foodImagePath != null
                                         ? kIsWeb
                                             ? Image.memory(
-                                                base64Decode(foodRecipe
-                                                    .foodImagePath!),
+                                                base64Decode(
+                                                    foodRecipe.foodImagePath!),
                                                 fit: BoxFit.cover,
                                               )
                                             : Image.file(
-                                                File(foodRecipe
-                                                    .foodImagePath!),
+                                                File(foodRecipe.foodImagePath!),
                                                 fit: BoxFit.cover,
                                               )
                                         : const Icon(
@@ -196,13 +181,11 @@ class HomeDbRetrieve extends StatelessWidget {
                                   ),
                                 ),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 10),
+                                  padding: const EdgeInsets.only(left: 10),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       Text(
                                         foodRecipe.title,
@@ -232,8 +215,10 @@ class HomeDbRetrieve extends StatelessWidget {
                       );
                     },
                   ),
-                  const SizedBox(height: 10,)
-          ] );
-      });
+            const SizedBox(
+              height: 10,
+            )
+          ]);
+        });
   }
 }

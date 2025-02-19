@@ -28,12 +28,15 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  carousel_slider: ^5.0.0
   cupertino_icons: ^1.0.8
   flutter:
     sdk: flutter
+  flutter_animate: ^4.5.2
   flutter_launcher_icons: ^0.14.2
   fluttericon: ^2.0.0
   font_awesome_flutter: ^10.8.0
+  get: null
   hive_flutter: ^1.1.0
   image_picker: ^1.1.2
   material_design_icons_flutter: ^7.0.7296

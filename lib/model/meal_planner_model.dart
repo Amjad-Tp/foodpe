@@ -13,8 +13,5 @@ class MealPlannerModel {
   final String category;
 
   MealPlannerModel(
-    {required this.day,
-    required this.name,
-    required this.category}
-  );
+      {required this.day, required this.name, required this.category});
 }

@@ -1,10 +1,9 @@
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 
 part 'user_model.g.dart';
 
 @HiveType(typeId: 0)
 class User extends HiveObject {
-  
   @HiveField(0)
   final String name;
 
@@ -17,5 +16,9 @@ class User extends HiveObject {
   @HiveField(3)
   final String phoneNumber;
 
-  User({required this.name, required this.email, required this.phoneNumber ,this.imagePath});
+  User(
+      {required this.name,
+      required this.email,
+      required this.phoneNumber,
+      this.imagePath});
 }

@@ -1,28 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:foodpe/main.dart';
+import 'package:foodpe/screens/code_Extraction/color.dart';
 
 class CustomTextfield extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final String? Function(String?)? validator;
-  const CustomTextfield({super.key, required this.controller, required this.hintText, this.validator});
+  const CustomTextfield(
+      {super.key,
+      required this.controller,
+      required this.hintText,
+      this.validator});
 
   @override
   Widget build(BuildContext context) {
-    
     final isDarkMode = themeNotifier.value;
 
     return TextFormField(
       controller: controller,
       textCapitalization: TextCapitalization.words,
       decoration: InputDecoration(
-        fillColor: isDarkMode ? const Color(0xFF545454) : const Color(0xFFD9D9D9),
+        fillColor:
+            isDarkMode ? const Color(0xFF545454) : const Color(0xFFD9D9D9),
         filled: true,
         hintText: hintText,
         hintStyle: TextStyle(
-          color: isDarkMode ? const Color(0xFFD9D9D9) : const Color(0xFF6E6E6E),
-          // fontSize: 18,
-          fontWeight: FontWeight.w400),
+            color:
+                isDarkMode ? const Color(0xFFD9D9D9) : const Color(0xFF6E6E6E),
+            // fontSize: 18,
+            fontWeight: FontWeight.w400),
         border: InputBorder.none,
         enabledBorder: OutlineInputBorder(
             borderSide: BorderSide.none,
@@ -40,13 +46,16 @@ class MultilineTextfield extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final String? errorText;
-  const MultilineTextfield({super.key, required this.controller, required this.hintText, this.errorText});
+  const MultilineTextfield(
+      {super.key,
+      required this.controller,
+      required this.hintText,
+      this.errorText});
 
   @override
   Widget build(BuildContext context) {
-
     final isDarkMode = themeNotifier.value;
-    
+
     return TextFormField(
       controller: controller,
       textCapitalization: TextCapitalization.sentences,
@@ -55,11 +64,13 @@ class MultilineTextfield extends StatelessWidget {
       maxLines: null,
       minLines: 2,
       decoration: InputDecoration(
-        fillColor: isDarkMode ? const Color(0xFF545454) : const Color(0xFFD9D9D9),
+        fillColor:
+            isDarkMode ? const Color(0xFF545454) : const Color(0xFFD9D9D9),
         filled: true,
         hintText: hintText,
         hintStyle: TextStyle(
-            color: isDarkMode ? const Color(0xFFD9D9D9) : const Color(0xFF6E6E6E),
+            color:
+                isDarkMode ? const Color(0xFFD9D9D9) : const Color(0xFF6E6E6E),
             fontSize: 18,
             fontWeight: FontWeight.w400),
         border: InputBorder.none,
@@ -71,7 +82,7 @@ class MultilineTextfield extends StatelessWidget {
             borderRadius: BorderRadius.circular(9)),
       ),
       validator: (value) {
-        if(value==null || value.isEmpty){
+        if (value == null || value.isEmpty) {
           return errorText;
         }
         return null;
@@ -82,23 +93,26 @@ class MultilineTextfield extends StatelessWidget {
 
 class NutritionalTextField extends StatelessWidget {
   final TextEditingController controller;
-    final String suffixText;
-    final String errorText;
-  const NutritionalTextField({super.key, required this.controller, required this.suffixText, required this.errorText});
+  final String suffixText;
+  final String errorText;
+  const NutritionalTextField(
+      {super.key,
+      required this.controller,
+      required this.suffixText,
+      required this.errorText});
 
   @override
   Widget build(BuildContext context) {
-
     final isDarkMode = themeNotifier.value;
-    
+
     return TextFormField(
       controller: controller,
       textCapitalization: TextCapitalization.words,
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 10),
-        fillColor: isDarkMode ? const Color(0xFF545454) : const Color(0xFFD9D9D9),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+        fillColor:
+            isDarkMode ? const Color(0xFF545454) : const Color(0xFFD9D9D9),
         filled: true,
         suffix: Text(
           suffixText,
@@ -126,7 +140,8 @@ class NutritionalTextField extends StatelessWidget {
 class SavingGreenOrange extends StatelessWidget {
   final VoidCallback onPressed;
   final String text;
-  const SavingGreenOrange({super.key, required this.onPressed, required this.text});
+  const SavingGreenOrange(
+      {super.key, required this.onPressed, required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +150,7 @@ class SavingGreenOrange extends StatelessWidget {
       onPressed: onPressed,
       style: TextButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
-        backgroundColor: isDarkMode ? const Color(0xFF8ec43f) : const Color(0xFFE08C43),
+        backgroundColor: isDarkMode ? darkModeColor : const Color(0xFFE08C43),
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
@@ -161,15 +176,12 @@ class CancelButton extends StatelessWidget {
     return TextButton(
       onPressed: onPressed,
       style: TextButton.styleFrom(
-        padding: const EdgeInsets.symmetric(
-            horizontal: 40, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
         foregroundColor: isDarkMode ? Colors.white : Colors.black,
         shape: RoundedRectangleBorder(
-            borderRadius:
-                BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(10),
             side: BorderSide(
-                color: isDarkMode ? Colors.white : Colors.black,
-                width: 1.5)),
+                color: isDarkMode ? Colors.white : Colors.black, width: 1.5)),
       ),
       child: Text(
         text,

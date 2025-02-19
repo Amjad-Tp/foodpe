@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:foodpe/main.dart';
 import 'package:foodpe/model/user_model.dart';
 import 'package:foodpe/screens/add_screen.dart';
+import 'package:foodpe/screens/code_Extraction/color.dart';
 import 'package:foodpe/screens/collections_screen.dart';
 import 'package:foodpe/screens/home_screen.dart';
 import 'package:foodpe/screens/user_screen.dart';
@@ -50,7 +51,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
               });
             },
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            selectedItemColor: isDarkMode ? const Color(0xFF8ec43f) : const Color(0xFFE27619),
+            selectedItemColor:
+                isDarkMode ? darkModeColor : const Color(0xFFE27619),
             unselectedItemColor: Colors.grey,
             iconSize: 27,
             showUnselectedLabels: false,

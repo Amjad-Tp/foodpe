@@ -4,7 +4,7 @@ import 'package:foodpe/screens/introduction_two.dart';
 import 'package:foodpe/screens/get_start.dart';
 
 class SplashHandling extends StatefulWidget {
-  SplashHandling({super.key});
+  const SplashHandling({super.key});
 
   @override
   _SplashHandlingState createState() => _SplashHandlingState();
@@ -51,7 +51,8 @@ class _SplashHandlingState extends State<SplashHandling> {
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 30),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 100, vertical: 30),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: LinearProgressIndicator(

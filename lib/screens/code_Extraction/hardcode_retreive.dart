@@ -4,13 +4,12 @@ import 'package:foodpe/screens/item/coded_item_screen.dart';
 
 class HardcodeRetreive extends StatelessWidget {
   final List<Map<String, String>> hardcodedFilteredItems;
-  const HardcodeRetreive({super.key,required this.hardcodedFilteredItems});
+  const HardcodeRetreive({super.key, required this.hardcodedFilteredItems});
 
   @override
   Widget build(BuildContext context) {
-
     double screenWidth = MediaQuery.of(context).size.width;
-    
+
     return Column(
       children: [
         if (hardcodedFilteredItems.isNotEmpty)
@@ -19,23 +18,19 @@ class HardcodeRetreive extends StatelessWidget {
             child: Align(
               alignment: Alignment.topLeft,
               child: Text(
-                'Premium 20+',
+                'Popular Recipes',
                 style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
-                    height: 1),
+                    fontSize: 24, fontWeight: FontWeight.w600, height: 1),
               ),
             ),
           ),
-
-          
         const SizedBox(height: 7),
         screenWidth > 500
             ? GridView.builder(
+                padding: EdgeInsets.zero,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                   mainAxisSpacing: 10,
                   crossAxisSpacing: 10,
@@ -57,15 +52,13 @@ class HardcodeRetreive extends StatelessWidget {
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.black,
-                        borderRadius:
-                            BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(10),
                       ),
                       child: Stack(
                         fit: StackFit.expand,
                         children: [
                           ClipRRect(
-                            borderRadius:
-                                BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(10),
                             child: Opacity(
                               opacity: 0.6,
                               child: food["image"] != null
@@ -75,45 +68,32 @@ class HardcodeRetreive extends StatelessWidget {
                                     )
                                   : const Icon(
                                       Linecons.food,
-                                      color:
-                                          Color(0xFF5D5D5D),
+                                      color: Color(0xFF5D5D5D),
                                       size: 100,
                                     ),
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(
-                                left: 10),
+                            padding: const EdgeInsets.only(left: 10),
                             child: Column(
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                              mainAxisAlignment:
-                                  MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Text(
                                   food["name"] ?? "No name",
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontWeight:
-                                        FontWeight.w600,
-                                    fontSize:
-                                        screenWidth > 700
-                                            ? 30
-                                            : 20,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: screenWidth > 700 ? 30 : 20,
                                     height: 0.8,
                                   ),
                                 ),
                                 Text(
-                                  food["category"] ??
-                                      "No Category",
+                                  food["category"] ?? "No Category",
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontWeight:
-                                        FontWeight.w400,
-                                    fontSize:
-                                        screenWidth > 700
-                                            ? 21
-                                            : 15,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: screenWidth > 700 ? 21 : 15,
                                   ),
                                 ),
                                 const SizedBox(height: 10),
@@ -127,14 +107,14 @@ class HardcodeRetreive extends StatelessWidget {
                 },
               )
             : ListView.builder(
+                padding: EdgeInsets.zero,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: hardcodedFilteredItems.length,
                 itemBuilder: (context, index) {
                   final food = hardcodedFilteredItems[index];
                   return Padding(
-                    padding:
-                        const EdgeInsets.only(bottom: 15.0),
+                    padding: const EdgeInsets.only(bottom: 15.0),
                     child: GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(
@@ -150,15 +130,13 @@ class HardcodeRetreive extends StatelessWidget {
                         height: 170,
                         decoration: BoxDecoration(
                           color: Colors.black,
-                          borderRadius:
-                              BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(10),
                         ),
                         child: Stack(
                           fit: StackFit.expand,
                           children: [
                             ClipRRect(
-                              borderRadius:
-                                  BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(10),
                               child: Opacity(
                                 opacity: 0.7,
                                 child: food["image"] != null
@@ -168,38 +146,31 @@ class HardcodeRetreive extends StatelessWidget {
                                       )
                                     : const Icon(
                                         Linecons.food,
-                                        color:
-                                            Color(0xFF5D5D5D),
+                                        color: Color(0xFF5D5D5D),
                                         size: 100,
                                       ),
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 10),
+                              padding: const EdgeInsets.only(left: 10),
                               child: Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Text(
                                     food["name"] ?? "No name",
                                     style: const TextStyle(
                                       color: Colors.white,
-                                      fontWeight:
-                                          FontWeight.w600,
+                                      fontWeight: FontWeight.w600,
                                       fontSize: 26,
                                       height: 0.8,
                                     ),
                                   ),
                                   Text(
-                                    food["category"] ??
-                                        "No Category",
+                                    food["category"] ?? "No Category",
                                     style: const TextStyle(
                                       color: Colors.white,
-                                      fontWeight:
-                                          FontWeight.w400,
+                                      fontWeight: FontWeight.w400,
                                       fontSize: 17,
                                     ),
                                   ),
