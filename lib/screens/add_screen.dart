@@ -36,7 +36,8 @@ class _AddScreenState extends State<AddScreen> {
   Future<void> _pickImage() async {
     if (kIsWeb) {
       // Web: Use base64 encoding
-      final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+      final pickedImage =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
       if (pickedImage != null) {
         final bytes = await pickedImage.readAsBytes();
         setState(() {
@@ -45,7 +46,8 @@ class _AddScreenState extends State<AddScreen> {
       }
     } else {
       // Mobile: Use file path
-      final XFile? pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+      final XFile? pickedImage =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
       if (pickedImage != null) {
         setState(() {
           addFoodImagePath = pickedImage.path; // Store file path
@@ -63,16 +65,19 @@ class _AddScreenState extends State<AddScreen> {
     final carbohydrates = _carbohydratesController.text;
     final protein = _proteinController.text;
     final fats = _fatsController.text;
-    final ingredients = _ingredientsControllers.map((controller) => controller.text.trim()).where((ingredient) => ingredient.isNotEmpty).toList();
+    final ingredients = _ingredientsControllers
+        .map((controller) => controller.text.trim())
+        .where((ingredient) => ingredient.isNotEmpty)
+        .toList();
 
-    publishingFood(name,cookTime,category,preperation,calories,carbohydrates,protein,fats,ingredients,context,addFoodImagePath);
+    publishingFood(name, cookTime, category, preperation, calories,
+        carbohydrates, protein, fats, ingredients, context, addFoodImagePath);
   }
 
   @override
   Widget build(BuildContext context) {
-
     final isDarkMode = themeNotifier.value;
-    
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -93,7 +98,9 @@ class _AddScreenState extends State<AddScreen> {
                   width: double.infinity,
                   height: 240,
                   decoration: BoxDecoration(
-                    color: isDarkMode ? const Color(0xFF545454) : const Color(0xFFD9D9D9),
+                    color: isDarkMode
+                        ? const Color(0xFF545454)
+                        : const Color(0xFFD9D9D9),
                     borderRadius: BorderRadius.circular(12),
                     image: addFoodImagePath != null
                         ? DecorationImage(
@@ -105,17 +112,26 @@ class _AddScreenState extends State<AddScreen> {
                         : null,
                   ),
                   child: addFoodImagePath == null
-                      ? const Icon(Icons.image_outlined,color: Colors.grey,size: 60,)
+                      ? const Icon(
+                          Icons.image_outlined,
+                          color: Colors.grey,
+                          size: 60,
+                        )
                       : null,
                 ),
               ),
-              const SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
               Form(
                   key: _formKey,
                   child: Column(
                     children: [
-                      WholeCustomTextField(name: _nameController, cookTime: _cookTimeController, category: _categoryController),
-      
+                      WholeCustomTextField(
+                          name: _nameController,
+                          cookTime: _cookTimeController,
+                          category: _categoryController),
+
                       //Ingredients
                       const Align(
                           alignment: Alignment.centerLeft,
@@ -124,25 +140,41 @@ class _AddScreenState extends State<AddScreen> {
                             style: TextStyle(
                                 fontSize: 23, fontWeight: FontWeight.w500),
                           )),
-      
+
                       Column(
                         children: List.generate(_ingredientsControllers.length,
                             (index) {
                           return Padding(
-                              padding: const EdgeInsets.only(bottom: 15),
-                              child: CustomTextfield(
-                                controller: _ingredientsControllers[index],
-                                hintText: 'Ingredients ${index + 1}',
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Give Ingredients properly';
-                                  }
-                                  return null;
-                                },
-                              ));
+                            padding: const EdgeInsets.only(bottom: 15),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: CustomTextfield(
+                                    controller: _ingredientsControllers[index],
+                                    hintText: 'Ingredient ${index + 1}',
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Provide ingredient';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                IconButton(
+                                  icon: const Icon(Icons.remove_circle_rounded),
+                                  onPressed: () {
+                                    setState(() {
+                                      _ingredientsControllers.removeAt(index);
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                          );
                         }),
                       ),
-      
+
                       TextButton.icon(
                         onPressed: () {
                           setState(() {
@@ -150,12 +182,23 @@ class _AddScreenState extends State<AddScreen> {
                                 .add(TextEditingController());
                           });
                         },
-                        label: const Text('Ingredient',style: TextStyle(fontSize: 18),),
-                        icon: const Icon(Icons.add_rounded),
-                        style: TextButton.styleFrom(foregroundColor: isDarkMode ? Colors.white : Colors.black),
+                        label: const Text(
+                          'Ingredient',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        icon: Icon(
+                          Icons.add_rounded,
+                          color: isDarkMode ? Colors.white : Colors.black,
+                        ),
+                        style: TextButton.styleFrom(
+                            backgroundColor: const Color(0xEBEAEAEA),
+                            foregroundColor:
+                                isDarkMode ? Colors.white : Colors.black),
                       ),
-                      const SizedBox(height: 15,),
-      
+                      const SizedBox(
+                        height: 15,
+                      ),
+
                       //Cooking Process
                       MultilineTextfield(
                           controller: _preparationController,
@@ -164,7 +207,7 @@ class _AddScreenState extends State<AddScreen> {
                       const SizedBox(
                         height: 15,
                       ),
-      
+
                       //Nutritional Information
                       const Align(
                           alignment: Alignment.centerLeft,
@@ -173,7 +216,7 @@ class _AddScreenState extends State<AddScreen> {
                             style: TextStyle(
                                 fontSize: 23, fontWeight: FontWeight.w500),
                           )),
-      
+
                       //Calories
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -188,18 +231,16 @@ class _AddScreenState extends State<AddScreen> {
                             width: 40,
                           ),
                           Expanded(
-                            child: NutritionalTextField(
-                              controller: _caloriesController,
-                              suffixText: 'kcal',
-                              errorText: 'Give the Calories of your food'
-                            )
-                          ),
+                              child: NutritionalTextField(
+                                  controller: _caloriesController,
+                                  suffixText: 'kcal',
+                                  errorText: 'Give the Calories of your food')),
                         ],
                       ),
                       const SizedBox(
                         height: 15,
                       ),
-      
+
                       //Protien
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -214,18 +255,16 @@ class _AddScreenState extends State<AddScreen> {
                             width: 40,
                           ),
                           Expanded(
-                            child: NutritionalTextField(
-                              controller: _proteinController,
-                              suffixText: 'g.',
-                              errorText: 'Give the Protien of your food'
-                            )
-                          ),
+                              child: NutritionalTextField(
+                                  controller: _proteinController,
+                                  suffixText: 'g.',
+                                  errorText: 'Give the Protien of your food')),
                         ],
                       ),
                       const SizedBox(
                         height: 15,
                       ),
-      
+
                       //Carbohydrates
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -240,18 +279,17 @@ class _AddScreenState extends State<AddScreen> {
                             width: 40,
                           ),
                           Expanded(
-                            child: NutritionalTextField(
-                              controller: _carbohydratesController,
-                              suffixText: 'g.',
-                              errorText: 'Give the Carbohydrates of your food'
-                            )
-                          ),
+                              child: NutritionalTextField(
+                                  controller: _carbohydratesController,
+                                  suffixText: 'g.',
+                                  errorText:
+                                      'Give the Carbohydrates of your food')),
                         ],
                       ),
                       const SizedBox(
                         height: 15,
                       ),
-      
+
                       //Fats
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -266,44 +304,41 @@ class _AddScreenState extends State<AddScreen> {
                             width: 40,
                           ),
                           Expanded(
-                            child: NutritionalTextField(
-                              controller: _fatsController,
-                              suffixText: 'g.',
-                              errorText: 'Give the Fats of your food'
-                            )
-                          ),
+                              child: NutritionalTextField(
+                                  controller: _fatsController,
+                                  suffixText: 'g.',
+                                  errorText: 'Give the Fats of your food')),
                         ],
                       ),
                       const SizedBox(
                         height: 15,
                       ),
-      
+
                       //Publish Button--------
                       SavingGreenOrange(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            callingTheAddingFunc();
-                            _nameController.clear();
-                            _cookTimeController.clear();
-                            _categoryController.clear();
-                            for (var 
-                            controller in _ingredientsControllers) {
-                              controller.clear();
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              callingTheAddingFunc();
+                              _nameController.clear();
+                              _cookTimeController.clear();
+                              _categoryController.clear();
+                              for (var controller in _ingredientsControllers) {
+                                controller.clear();
+                              }
+                              _ingredientsControllers.removeRange(
+                                  2, _ingredientsControllers.length);
+                              _preparationController.clear();
+                              _caloriesController.clear();
+                              _proteinController.clear();
+                              _carbohydratesController.clear();
+                              _fatsController.clear();
+                              setState(() {
+                                addFoodImagePath = null;
+                              });
                             }
-                            _ingredientsControllers.removeRange(2, _ingredientsControllers.length);
-                            _preparationController.clear();
-                            _caloriesController.clear();
-                            _proteinController.clear();
-                            _carbohydratesController.clear();
-                            _fatsController.clear();
-                            setState(() {
-                              addFoodImagePath = null;
-                            });
-                          }
-                        },
-                        text: "Publish"
-                      ),
-      
+                          },
+                          text: "Publish"),
+
                       const SizedBox(
                         height: 15,
                       ),
@@ -315,7 +350,6 @@ class _AddScreenState extends State<AddScreen> {
       ),
     );
   }
-  
 
   @override
   void dispose() {

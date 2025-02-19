@@ -19,17 +19,18 @@ class HomeDbRetrieve extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return ValueListenableBuilder<List<Food>>(
-        valueListenable: foodListNotifier,
-        builder: (context, foodList, child) {
-          final filteredList = foodList
-              .where((food) =>
-                  (selectedItem == "All" || food.category == selectedItem) &&
-                  food.title
-                      .toLowerCase()
-                      .contains(searchController.text.toLowerCase()))
-              .toList();
+      valueListenable: foodListNotifier,
+      builder: (context, foodList, child) {
+        final filteredList = foodList
+            .where((food) =>
+                (selectedItem == "All" || food.category == selectedItem) &&
+                food.title
+                    .toLowerCase()
+                    .contains(searchController.text.toLowerCase()))
+            .toList();
 
-          return Column(children: [
+        return Column(
+          children: [
             if (filteredList.isNotEmpty)
               const Padding(
                 padding: EdgeInsets.only(left: 7.0),
@@ -215,10 +216,9 @@ class HomeDbRetrieve extends StatelessWidget {
                       );
                     },
                   ),
-            const SizedBox(
-              height: 10,
-            )
-          ]);
-        });
+          ],
+        );
+      },
+    );
   }
 }

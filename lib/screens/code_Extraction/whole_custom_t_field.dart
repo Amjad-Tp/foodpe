@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodpe/functions/nr_functions.dart';
+import 'package:foodpe/main.dart';
 import 'package:foodpe/screens/code_Extraction/custom_textfield.dart';
 
 class WholeCustomTextField extends StatefulWidget {
@@ -7,82 +8,106 @@ class WholeCustomTextField extends StatefulWidget {
   final TextEditingController cookTime;
   final TextEditingController category;
 
-  const WholeCustomTextField({super.key, required this.name, required this.cookTime, required this.category});
+  const WholeCustomTextField(
+      {super.key,
+      required this.name,
+      required this.cookTime,
+      required this.category});
 
   @override
   State<WholeCustomTextField> createState() => _WholeCustomTextFieldState();
 }
 
 class _WholeCustomTextFieldState extends State<WholeCustomTextField> {
+  final isDarkMode = themeNotifier.value;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         CustomTextfield(
-            controller: widget.name,
-            hintText: 'Recipe Title',
-            validator: (value) => validateField(value: value, fieldName: 'Recipe Title',),
+          controller: widget.name,
+          hintText: 'Recipe Title',
+          validator: (value) => validateField(
+            value: value,
+            fieldName: 'Recipe Title',
           ),
-          const SizedBox(
-            height: 20,
-          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
 
-          //----------CookTime
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                'Cook time(average time)',
-                style: TextStyle(fontSize: 20),
-              ),
-              const SizedBox(
-                width: 40,
-              ),
-              Expanded(
-                child: CustomTextfield(
-                  controller: widget.cookTime,
-                  hintText: '2hr 30min',
-                  validator: (value) => validateField(value: value,fieldName: 'Cook Time',),
+        //----------CookTime
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'Cook time(average time)',
+              style: TextStyle(fontSize: 20),
+            ),
+            const SizedBox(
+              width: 40,
+            ),
+            Expanded(
+              child: CustomTextfield(
+                controller: widget.cookTime,
+                hintText: '2hr 30min',
+                validator: (value) => validateField(
+                  value: value,
+                  fieldName: 'Cook Time',
                 ),
               ),
-            ],
-          ),
-          const SizedBox(height: 15,),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 15,
+        ),
 
-          //-------Category
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                'Category',
-                style: TextStyle(fontSize: 20),
-              ),
-              const SizedBox(
-                width: 40,
-              ),
-              Expanded(
-                child: DropdownButtonFormField<String>(
-                  decoration: const InputDecoration(
-                    hintText: 'choose a category',
+        //-------Category
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'Category',
+              style: TextStyle(fontSize: 20),
+            ),
+            const SizedBox(
+              width: 40,
+            ),
+            Expanded(
+              child: DropdownButtonFormField<String>(
+                decoration: InputDecoration(
+                  hintText: 'choose a category',
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: isDarkMode ? Colors.white : Colors.black,
+                    ),
                   ),
-                  value: widget.category.text.isEmpty ? null : widget.category.text,
-                  items: ['Breakfast', 'Lunch', 'Snacks', 'Dinner']
-                      .map((category) => DropdownMenuItem(
-                            value: category,
-                            child: Text(category),
-                          )).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      widget.category.text = value!;
-                    });
-                  },
-                  validator: (value) => value == null || value.isEmpty ? 'Please select a category' : null,
                 ),
-              )
-            ],
-          ),
-          const SizedBox(height: 15,),
+                value:
+                    widget.category.text.isEmpty ? null : widget.category.text,
+                items: ['Breakfast', 'Lunch', 'Snacks', 'Dinner']
+                    .map((category) => DropdownMenuItem(
+                          value: category,
+                          child: Text(category),
+                        ))
+                    .toList(),
+                onChanged: (value) {
+                  setState(() {
+                    widget.category.text = value!;
+                  });
+                },
+                validator: (value) => value == null || value.isEmpty
+                    ? 'Please select a category'
+                    : null,
+              ),
+            )
+          ],
+        ),
+        const SizedBox(
+          height: 15,
+        ),
       ],
     );
   }

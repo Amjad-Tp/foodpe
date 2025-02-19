@@ -326,12 +326,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     else ...[
                       // Display the filtered list
                       HomeDbRetrieve(
-                          selectedItem: selectedItem,
-                          searchController: _searchController),
+                        selectedItem: selectedItem,
+                        searchController: _searchController,
+                      ),
 
                       // Hardcoded items
                       HardcodeRetreive(
-                          hardcodedFilteredItems: hardcodedFilteredItems),
+                        hardcodedFilteredItems: hardcodedFilteredItems,
+                      ),
                     ]
                   ],
                 ),
