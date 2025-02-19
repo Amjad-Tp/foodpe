@@ -10,17 +10,19 @@ import 'package:foodpe/screens/code_Extraction/whole_custom_t_field.dart';
 class EditaddForms extends StatefulWidget {
   final Food foodRecipe;
   final int index;
-  const EditaddForms({super.key, required this.foodRecipe, required this.index});
+  final String? selectedImagePath;
+  const EditaddForms(
+      {super.key,
+      required this.foodRecipe,
+      required this.index,
+      required this.selectedImagePath});
 
   @override
   State<EditaddForms> createState() => _EditaddFormsState();
 }
 
 class _EditaddFormsState extends State<EditaddForms> {
-
   final _formKey = GlobalKey<FormState>();
-
-  String? _selectedImagePath;
 
   late final TextEditingController name;
   late final TextEditingController cookTime;
@@ -37,21 +39,25 @@ class _EditaddFormsState extends State<EditaddForms> {
   void initState() {
     super.initState();
     name = TextEditingController(text: widget.foodRecipe.title);
-    cookTime =TextEditingController(text: widget.foodRecipe.cookTime);
-    category =TextEditingController(text: widget.foodRecipe.category);
-    preparation =TextEditingController(text: widget.foodRecipe.preparation);
-    calories =TextEditingController(text: widget.foodRecipe.calories.toString());
-    protein =TextEditingController(text: widget.foodRecipe.protein.toString());
-    carbohydrates =TextEditingController(text: widget.foodRecipe.carbohydrates.toString());
-    fats =TextEditingController(text: widget.foodRecipe.fats.toString());
+    cookTime = TextEditingController(text: widget.foodRecipe.cookTime);
+    category = TextEditingController(text: widget.foodRecipe.category);
+    preparation = TextEditingController(text: widget.foodRecipe.preparation);
+    calories =
+        TextEditingController(text: widget.foodRecipe.calories.toString());
+    protein = TextEditingController(text: widget.foodRecipe.protein.toString());
+    carbohydrates =
+        TextEditingController(text: widget.foodRecipe.carbohydrates.toString());
+    fats = TextEditingController(text: widget.foodRecipe.fats.toString());
 
     for (var ingredient in widget.foodRecipe.ingredients) {
       _ingredientsControllers.add(TextEditingController(text: ingredient));
     }
   }
+
   Future<void> _publishFood(int index) async {
     final updatedFood = Food(
-      foodImagePath: _selectedImagePath ?? widget.foodRecipe.foodImagePath,
+      foodImagePath:
+          widget.selectedImagePath ?? widget.foodRecipe.foodImagePath,
       title: name.text,
       cookTime: cookTime.text,
       category: category.text.trim(),
@@ -66,163 +72,198 @@ class _EditaddFormsState extends State<EditaddForms> {
     showMessage(context, 'Updated Successfully');
     Navigator.pop(context, updatedFood);
   }
-  
+
   @override
   Widget build(BuildContext context) {
-
     bool isDarkMode = themeNotifier.value;
-    
+
     return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          WholeCustomTextField(name: name, cookTime: cookTime, category: category),
+        key: _formKey,
+        child: Column(
+          children: [
+            WholeCustomTextField(
+                name: name, cookTime: cookTime, category: category),
 
-          //Ingredients
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: Text("Ingredients",style: TextStyle(fontSize: 23, fontWeight: FontWeight.w500),)
-          ),
+            //Ingredients
+            const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Ingredients",
+                  style: TextStyle(fontSize: 23, fontWeight: FontWeight.w500),
+                )),
 
-          Column(
-            children: List.generate(_ingredientsControllers.length,
-              (index) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 15),
-                child: CustomTextfield(
-                  controller: _ingredientsControllers[index],
-                  hintText: 'Ingredients ${index + 1}',
-                  validator: (value) => validateField(value: value,fieldName: 'Ingredient ${index + 1}',),
-                ));
-            }),
-          ),
+            Column(
+              children: List.generate(_ingredientsControllers.length, (index) {
+                return Padding(
+                    padding: const EdgeInsets.only(bottom: 15),
+                    child: CustomTextfield(
+                      controller: _ingredientsControllers[index],
+                      hintText: 'Ingredients ${index + 1}',
+                      validator: (value) => validateField(
+                        value: value,
+                        fieldName: 'Ingredient ${index + 1}',
+                      ),
+                    ));
+              }),
+            ),
 
-          TextButton.icon(
-            onPressed: () {
-              setState(() {
-                _ingredientsControllers.add(TextEditingController());
-              });
-            },
-            label: const Text('Ingredient',style: TextStyle(fontSize: 18),),
-            icon: const Icon(Icons.add_rounded),
-            style:TextButton.styleFrom(foregroundColor: isDarkMode ? Colors.white : Colors.black),
-          ),
-
-          const SizedBox(height: 15,),
-
-          //Cooking Process
-          MultilineTextfield(
-              controller: preparation,
-              hintText: 'Describe your cooking process here...',
-              errorText: 'Explain your your cooking process'),
-          const SizedBox(height: 15,),
-
-          //Nutritional Information
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: Text("Nutritional Information",style: TextStyle(fontSize: 23, fontWeight: FontWeight.w500),)
-          ),
-
-          //Calories
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const SizedBox(
-                  width: 150,
-                  child: Text('Calories',style: TextStyle(fontSize: 20),)),
-              const SizedBox(
-                width: 40,
+            TextButton.icon(
+              onPressed: () {
+                setState(() {
+                  _ingredientsControllers.add(TextEditingController());
+                });
+              },
+              label: const Text(
+                'Ingredient',
+                style: TextStyle(fontSize: 18),
               ),
-              Expanded(
-                  child: NutritionalTextField(
-                      controller: calories,
-                      suffixText: 'kcal',
-                      errorText: 'Give the Calories of your food')),
-            ],
-          ),
-          const SizedBox(height: 15,),
+              icon: const Icon(Icons.add_rounded),
+              style: TextButton.styleFrom(
+                  foregroundColor: isDarkMode ? Colors.white : Colors.black),
+            ),
 
-          //Protien
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const SizedBox(
-                  width: 150,
-                  child: Text('Protien',style: TextStyle(fontSize: 20),)),
-              const SizedBox(
-                width: 40,
-              ),
-              Expanded(
-                  child: NutritionalTextField(
-                      controller: protein,
-                      suffixText: 'g.',
-                      errorText: 'Give the Protien of your food')),
-            ],
-          ),
-          const SizedBox(height: 15,),
+            const SizedBox(
+              height: 15,
+            ),
 
-          //Carbohydrates
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const SizedBox(
-                  width: 150,
-                  child: Text('Carbohydrates',style: TextStyle(fontSize: 20),)),
-              const SizedBox(
-                width: 40,
-              ),
-              Expanded(
-                  child: NutritionalTextField(
-                      controller: carbohydrates,
-                      suffixText: 'g.',
-                      errorText:'Give the Carbohydrates of your food')),
-            ],
-          ),
-          const SizedBox(height: 15,),
+            //Cooking Process
+            MultilineTextfield(
+                controller: preparation,
+                hintText: 'Describe your cooking process here...',
+                errorText: 'Explain your your cooking process'),
+            const SizedBox(
+              height: 15,
+            ),
 
-          //Fats
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const SizedBox(
-                  width: 150,
-                  child: Text(
-                    'Fats',
-                    style: TextStyle(fontSize: 20),
-                  )),
-              const SizedBox(
-                width: 40,
-              ),
-              Expanded(
-                  child: NutritionalTextField(
-                      controller: fats,
-                      suffixText: 'g.',
-                      errorText: 'Give the Fats of your food')),
-            ],
-          ),
-          const SizedBox(height: 15,),
+            //Nutritional Information
+            const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Nutritional Information",
+                  style: TextStyle(fontSize: 23, fontWeight: FontWeight.w500),
+                )),
 
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              //Cancel Button--------
-              CancelButton(onPressed: () => Navigator.pop(context), text: "Cancel"),
+            //Calories
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(
+                    width: 150,
+                    child: Text(
+                      'Calories',
+                      style: TextStyle(fontSize: 20),
+                    )),
+                const SizedBox(
+                  width: 40,
+                ),
+                Expanded(
+                    child: NutritionalTextField(
+                        controller: calories,
+                        suffixText: 'kcal',
+                        errorText: 'Give the Calories of your food')),
+              ],
+            ),
+            const SizedBox(
+              height: 15,
+            ),
 
-              const SizedBox(width: 10,),
+            //Protien
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(
+                    width: 150,
+                    child: Text(
+                      'Protien',
+                      style: TextStyle(fontSize: 20),
+                    )),
+                const SizedBox(
+                  width: 40,
+                ),
+                Expanded(
+                    child: NutritionalTextField(
+                        controller: protein,
+                        suffixText: 'g.',
+                        errorText: 'Give the Protien of your food')),
+              ],
+            ),
+            const SizedBox(
+              height: 15,
+            ),
 
-              //---------change Button
-              SavingGreenOrange(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _publishFood(widget.index);
-                  }
-                },
-                text: "change"
-              )
-            ],
-          ),
-          const SizedBox(height: 15,),
-        ],
-      ));
+            //Carbohydrates
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(
+                    width: 150,
+                    child: Text(
+                      'Carbohydrates',
+                      style: TextStyle(fontSize: 20),
+                    )),
+                const SizedBox(
+                  width: 40,
+                ),
+                Expanded(
+                    child: NutritionalTextField(
+                        controller: carbohydrates,
+                        suffixText: 'g.',
+                        errorText: 'Give the Carbohydrates of your food')),
+              ],
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+
+            //Fats
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(
+                    width: 150,
+                    child: Text(
+                      'Fats',
+                      style: TextStyle(fontSize: 20),
+                    )),
+                const SizedBox(
+                  width: 40,
+                ),
+                Expanded(
+                    child: NutritionalTextField(
+                        controller: fats,
+                        suffixText: 'g.',
+                        errorText: 'Give the Fats of your food')),
+              ],
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                //Cancel Button--------
+                CancelButton(
+                    onPressed: () => Navigator.pop(context), text: "Cancel"),
+
+                const SizedBox(
+                  width: 10,
+                ),
+
+                //---------change Button
+                SavingGreenOrange(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        _publishFood(widget.index);
+                      }
+                    },
+                    text: "change")
+              ],
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+          ],
+        ));
   }
 }

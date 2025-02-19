@@ -8,7 +8,8 @@ import 'package:foodpe/screens/code_Extraction/edit_add_forms.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EditFoodScreen extends StatefulWidget {
-  const EditFoodScreen({super.key, required this.foodRecipe, required this.index});
+  const EditFoodScreen(
+      {super.key, required this.foodRecipe, required this.index});
 
   final Food foodRecipe;
   final int index;
@@ -18,7 +19,6 @@ class EditFoodScreen extends StatefulWidget {
 }
 
 class _EditFoodScreenState extends State<EditFoodScreen> {
-
   String? _selectedImagePath;
 
   @override
@@ -61,8 +61,10 @@ class _EditFoodScreenState extends State<EditFoodScreen> {
                         : widget.foodRecipe.foodImagePath != null
                             ? DecorationImage(
                                 image: kIsWeb
-                                    ? MemoryImage(base64Decode(widget.foodRecipe.foodImagePath!))
-                                    : FileImage(File(widget.foodRecipe.foodImagePath!)),
+                                    ? MemoryImage(base64Decode(
+                                        widget.foodRecipe.foodImagePath!))
+                                    : FileImage(
+                                        File(widget.foodRecipe.foodImagePath!)),
                                 fit: BoxFit.cover,
                               )
                             : null,
@@ -77,9 +79,10 @@ class _EditFoodScreenState extends State<EditFoodScreen> {
               const SizedBox(
                 height: 20,
               ),
-
-              EditaddForms(foodRecipe: widget.foodRecipe, index: widget.index)
-              
+              EditaddForms(
+                  foodRecipe: widget.foodRecipe,
+                  index: widget.index,
+                  selectedImagePath: _selectedImagePath)
             ],
           ),
         ),
@@ -89,7 +92,8 @@ class _EditFoodScreenState extends State<EditFoodScreen> {
 
   Future<void> _pickImage() async {
     if (kIsWeb) {
-      final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+      final pickedImage =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
       if (pickedImage != null) {
         final bytes = await pickedImage.readAsBytes();
         setState(() {
@@ -97,8 +101,8 @@ class _EditFoodScreenState extends State<EditFoodScreen> {
         });
       }
     } else {
-      
-      final XFile? pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+      final XFile? pickedImage =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
       if (pickedImage != null) {
         setState(() {
           _selectedImagePath = pickedImage.path;
