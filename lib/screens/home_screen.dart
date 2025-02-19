@@ -1,8 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:foodpe/functions/db_functions.dart';
 import 'package:foodpe/model/food_model.dart';
 import 'package:foodpe/model/user_model.dart';
@@ -175,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -195,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         const Duration(milliseconds: 500)),
                             Flexible(
                               child: AnimatedContainer(
-                                duration: const Duration(milliseconds: 200),
+                                duration: const Duration(milliseconds: 400),
                                 width: isSearching
                                     ? MediaQuery.of(context).size.width * 0.92
                                     : 50,
