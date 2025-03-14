@@ -1,0 +1,2 @@
+C:/Users/AMJAD/OneDrive/Desktop/foodpe/android/app/.cxx/RelWithDebInfo/t506h3zm/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/AMJAD/OneDrive/Desktop/foodpe/android/app/.cxx/RelWithDebInfo/t506h3zm/armeabi-v7a/CMakeFiles/rebuild_cache.dir
