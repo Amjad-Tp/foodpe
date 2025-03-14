@@ -126,7 +126,7 @@ class DrawerWidget extends StatelessWidget {
               const Align(
                 alignment: Alignment.bottomCenter,
                 child: Text(
-                  "Version 1.0.0",
+                  "Version 1.1.0",
                   style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
               )
