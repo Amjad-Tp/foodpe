@@ -22,7 +22,7 @@ void main() async {
   await Hive.openBox<MealPlannerModel>('mealBox');
 
   final settingsBox = Hive.box('settingsBox');
-  themeNotifier.value = settingsBox.get('isDarkMode',defaultValue: false);
+  themeNotifier.value = settingsBox.get('isDarkMode', defaultValue: false);
 
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
@@ -46,17 +46,21 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: isDarkMode
               ? ThemeData.dark().copyWith(
-                  textTheme: ThemeData.dark().textTheme.apply(fontFamily: 'LeagueSpartan', bodyColor: Colors.white),
+                  textTheme: ThemeData.dark().textTheme.apply(
+                      fontFamily: 'LeagueSpartan', bodyColor: Colors.white),
                   inputDecorationTheme: _inputDecorationBuilder(Colors.white),
                   elevatedButtonTheme: ElevatedButtonThemeData(
                     style: ButtonStyle(
-                      backgroundColor: WidgetStateProperty.all<Color>(Colors.white),
+                      backgroundColor:
+                          WidgetStateProperty.all<Color>(Colors.white),
                     ),
                   ),
                 )
               : ThemeData.light().copyWith(
-                  textTheme: ThemeData.light().textTheme.apply(fontFamily: 'LeagueSpartan', bodyColor: Colors.black),
-                  inputDecorationTheme: _inputDecorationBuilder(const Color(0xFFE27619)),
+                  textTheme: ThemeData.light().textTheme.apply(
+                      fontFamily: 'LeagueSpartan', bodyColor: Colors.black),
+                  inputDecorationTheme:
+                      _inputDecorationBuilder(const Color(0xFFE27619)),
                 ),
           home: const SplashScreen(),
         );
